@@ -1,7 +1,11 @@
 # Entrega 1 del proyecto WP01
-## 1.1 Diagrama de Cajas negras
-![diagrama caja](https://github.com/unal-edigital1-lab/entrega-1-proyecto-grupo10-2024-1/assets/160156354/65799273-b1e6-485b-99a4-61b6771c8025)
+## 1.1 Diagrama de flujo
 
+## 1.2 Unidad de control (States Machine)
+
+## 1.3 Data path
+
+## 1.4 Máquina de estados finita
 
 
 ## 1.2  Especificación de los componentes:
@@ -73,6 +77,3 @@ Interacción con el sensor de luz:
 
 - 1: si el sensor detecta un 10% de luz en un espacio, se podrán hacer todas las acciones excepto dormir (la acción dormir también estará deshabilitada en el modo test)
 -  0: Si por el contrario este es menos de un 10%, solo se podrán ejecutar las acciones de dormir y alimentar
-
-
-## 1.3  Máquina de estado finita
