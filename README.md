@@ -75,5 +75,5 @@ Se usará el sensor de luz IM120710017, el cual usa un fotoresistencia GL5528.
 
 Interacción con el sensor de luz: 
 
-- 1: si el sensor detecta un 10% de luz en un espacio, se podrán hacer todas las acciones excepto dormir (la acción dormir también estará deshabilitada en el modo test)
--  0: Si por el contrario este es menos de un 10%, solo se podrán ejecutar las acciones de dormir y alimentar
+- 1: si el sensor detecta oscuridad durante 5 segundos el bicho se duerme automáticamente
+-  0: si hay luz 
