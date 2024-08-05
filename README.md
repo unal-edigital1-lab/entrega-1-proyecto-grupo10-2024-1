@@ -7,7 +7,7 @@
 
 ## 1.3 Caja Negra
 
-![cajagrande](https://github.com/user-attachments/assets/dddbb4dc-ffa1-40a0-a9ab-8355ddc439c1)
+![Electrónica I Proyecto Primera entrega (2)](https://github.com/user-attachments/assets/4a06cffc-c040-498e-be50-4de644e20b82)
 
 ![cajalcd](https://github.com/user-attachments/assets/84a14539-6fe7-48de-b892-a8a6cae484ab)
 
