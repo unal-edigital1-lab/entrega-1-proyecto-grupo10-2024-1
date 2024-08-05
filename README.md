@@ -1,11 +1,11 @@
 # Entrega 1 del proyecto WP01
 ## 1.1 Diagrama de flujo
+![Electrónica I Proyecto Primera entrega](https://github.com/user-attachments/assets/8f12221a-597c-4c37-bd57-5fdada03e0ea)
 
 ## 1.2 Unidad de control (States Machine)
+![Electrónica I Proyecto Primera entrega (1)](https://github.com/user-attachments/assets/f6fd0498-f7bf-4c9e-af9b-42a9cb640f1c)
 
-## 1.3 Data path
-
-## 1.4 Caja Negra
+## 1.3 Caja Negra
 
 ![cajagrande](https://github.com/user-attachments/assets/dddbb4dc-ffa1-40a0-a9ab-8355ddc439c1)
 
@@ -20,19 +20,19 @@
 
 * Mediante los botones *Btn A* y *Btn B*. Se modificará el tiempo que tiene el usuario para realizar una acción y evitar que los estados bajen una unidad. Lo que se muestra en el 7 segmentos es llamado *time*.
 
-## 1.2  Especificación de los componentes:
+## 1.4  Especificación de los componentes:
 
-### 1.2.1  Visualización
+### 1.4.1  Visualización
 
 La visualización principal se llevará a cabo en un LCD gráfico 16x4 (posible modelo: WG12864A)
 Aquí es donde mostraremos el tamagotchi, así como también las barras del estado.
 
-<img src="https://github.com/unal-edigital1-lab/entrega-1-proyecto-grupo10-2024-1/assets/159223904/ba9cd04e-095f-4776-ba77-2e0c4786a495.type" width="600" height="600">
+![lcd g](https://github.com/user-attachments/assets/83a85125-9025-4149-8bd2-5601da65ddf5)
 
 EL display de 7 segmentos se usará con el fin de brindar un apoyo visualizando puntajes y valores adicionales.
 
 
-### 1.2.2  Botones
+### 1.4.2  Botones
 
 1. Rst
 2. Test
@@ -79,7 +79,7 @@ Entonces, si por ejemplo se pulsa la acción jugar, todos los estados aumentará
 SI NO SE REALIZA NINGUNA ACCIÓN EN 15 MINUTOS, CADA ESTADO DISMINUIRÁ UN CUADRO
 
 
-### 1.2.3  Sensor de luz
+### 1.4.3  Sensor de luz
 
 Se usará el sensor de luz IM120710017, el cual usa un fotoresistencia GL5528.
 
