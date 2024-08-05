@@ -5,8 +5,20 @@
 
 ## 1.3 Data path
 
-## 1.4 Máquina de estados finita
+## 1.4 Caja Negra
 
+![cajagrande](https://github.com/user-attachments/assets/dddbb4dc-ffa1-40a0-a9ab-8355ddc439c1)
+
+![cajalcd](https://github.com/user-attachments/assets/84a14539-6fe7-48de-b892-a8a6cae484ab)
+
+* En este diagrama, se utilizan parámetros como *ready_i* que servirá para modificar los estados que muestra la pantalla LCD
+* El pin RW cuando está en 0 determina que la operación es de escritura.
+* El pin RS selecciona registros, dependiendo del estado puede mover el cursor o limpiar la pantalla (si está en 0) o puede enviar datos para mostrar en la pantalla si está en 1.
+* *Data* (D0 a D7) se utilizan para enviar información de comandos y caracteres al controlador de la pantalla. Todo esto mediante un microcontrolador.
+
+![caja7seg](https://github.com/user-attachments/assets/926c33a8-3dae-47b4-b5c3-6ec32247f0bc)
+
+* Mediante los botones *Btn A* y *Btn B*. Se modificará el tiempo que tiene el usuario para realizar una acción y evitar que los estados bajen una unidad. Lo que se muestra en el 7 segmentos es llamado *time*.
 
 ## 1.2  Especificación de los componentes:
 
