@@ -24,7 +24,7 @@
 
 ### 1.2.1  Visualización
 
-La visualización principal se llevará a cabo en un LCD gráfico 128X64 (posible modelo: WG12864A)
+La visualización principal se llevará a cabo en un LCD gráfico 16x4 (posible modelo: WG12864A)
 Aquí es donde mostraremos el tamagotchi, así como también las barras del estado.
 
 <img src="https://github.com/unal-edigital1-lab/entrega-1-proyecto-grupo10-2024-1/assets/159223904/ba9cd04e-095f-4776-ba77-2e0c4786a495.type" width="600" height="600">
