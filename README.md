@@ -1,3 +1,9 @@
+# NOMBRES
++ Diego Ruiz
++ Roger Bejarano
++ Sebastian Conejo
++ Santiago Cubillos
+
 # Entrega 1 del proyecto WP01
 ## 1.1 Diagrama de flujo
 ![Electrónica I Proyecto Primera entrega](https://github.com/user-attachments/assets/8f12221a-597c-4c37-bd57-5fdada03e0ea)
