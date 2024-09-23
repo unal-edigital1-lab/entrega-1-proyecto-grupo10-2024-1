@@ -94,4 +94,52 @@ Se usará el sensor de luz IM120710017, el cual usa un fotoresistencia GL5528.
 Interacción con el sensor de luz: 
 
 - 1: si el sensor detecta oscuridad durante 5 segundos el bicho se duerme automáticamente
--  0: si hay luz 
+-  0: si hay luz
+# 2. Datapaths
+## 2.1 Módulo UltrasonicSensor
+Este módulo consta de tres bloques principales:
+- **Generación del trigger:** Este bloque genera un pulso para activar el sensor ultrasónico.
+- **Medición del ancho del pulso:** Este bloque mide el tiempo que el pulso "echo" permanece alto, lo que corresponde a la distancia a la que está el objeto.
+- **Detección del objeto:** Basado en el ancho del pulso, se decide si un objeto está dentro del rango detectable.
+### 2.1.1 Datapath del bloque de generación de trigger
+- **Señal de entrada:** clk (señal de reloj).
+- **Registro de estado de trigger:** El registro trig_state controla cuándo se activa el pulso de trigger. Este cambia entre 0 y 1, activando el trigger por una duración específica.
+- **Contador de ciclos:** trig_counter acumula ciclos del reloj hasta que alcanza la duración de pulso definida en pulse_duration. Una vez alcanzada, se genera el pulso de activación del sensor.
+- **Salida:** trigger es la señal que activa el sensor ultrasónico.
+### 2.1.2 Datapath del bloque de medición del ancho del pulso
+- **Entrada:** echo es la señal que proviene del sensor ultrasónico y representa el tiempo que tarda en recibir el eco de vuelta.
+- **Contador de tiempo:** counter empieza a contar cuando echo está en alto, y sigue contando mientras se mantiene alta. Este contador mide el tiempo que transcurre entre el envío y la recepción del pulso ultrasónico.
+- **Registro del ancho del pulso:** pulse_width almacena el valor final del contador cuando el echo vuelve a cero, lo que representa la duración del eco.
+### 2.1.3 Datapath del bloque de detección del objeto
+- **Entrada:** pulse_width se compara con el umbral time_threshold. Este valor umbral está relacionado con la distancia máxima que puede detectar el sensor.
+- **Salida:** object_detected se activa (es 1) si el ancho del pulso indica que un objeto está dentro de la distancia definida (pulse_width <= time_threshold).
+### 2.1.4 Flujo de datos
+- **Generación del Trigger:** El trigger se genera periódicamente y se envía al sensor ultrasónico.
+- **Medición del eco:** El eco medido se convierte en el ancho de pulso, que se mide en ciclos del reloj.
+- **Decisión de detección:** El ancho de pulso se compara con un valor de referencia para determinar si hay un objeto en el rango detectado.
+## 2.2 Módulo del sensor de luz
+### 2.2.1 Entradas y salidas
+- **Entrada:** LDR_signal, que es la señal digital proveniente del LDR (convertida previamente de analógica a digital por un ADC externo o un comparador).
+- **Salida:** sensor, que activa o desactiva el LED basado en la señal del LDR.
+### 2.2.2 Datapath del módulo sensor_luz
+Este módulo tiene un solo bloque combinacional. El flujo de datos sigue un simple camino en el que el valor de la entrada (señal del LDR) controla directamente la salida (control del LED).
+**Bloques principales:**
+
+**Comparación de la señal LDR:**
+- **Entrada:** LDR_signal (0 o 1).
+- La señal del LDR se evalúa de manera directa. Si la señal es alta (1), significa que hay suficiente luz, y si es baja (0), significa que no hay luz o está oscuro.
+
+**Control de la salida:**
+- Si LDR_signal == 1, el LED (sensor) se enciende (1'b1).
+- Si LDR_signal == 0, el LED (sensor) se apaga (1'b0).
+### 2.2.3 Datapath detallado
+- **Entrada:** LDR_signal, que indica si el sensor detecta luz.
+- **Decisión:** El bloque lógico compara el valor de LDR_signal:
+- Si hay luz (LDR_signal == 1), el LED se enciende (sensor <= 1'b1).
+- Si no hay luz (LDR_signal == 0), el LED se apaga (sensor <= 1'b0).
+- **Salida:** El estado de sensor (encendido o apagado) se actualiza según el valor de la señal del LDR.
+
+### 2.2.4 Flujo de datos:
+- **Entrada del LDR:** Se recibe la señal digital del LDR.
+- **Proceso combinacional:** Dependiendo de si la señal del LDR es 1 o 0, el LED se activa o desactiva.
+- **Salida del LED:** El valor de sensor se ajusta para encender o apagar el LED.
