@@ -96,6 +96,11 @@ Interacción con el sensor de luz:
 - 1: si el sensor detecta oscuridad durante 5 segundos el bicho se duerme automáticamente
 -  0: si hay luz
 # 2. Proceso 
+### (cambiar a conveniencia) Errores cometidos en el proceso en el sensor de ultrasonido
+- **Integración con el clock de la FPGA:** Se desconocía qué ciclos de reloj se debían usar para configurar el trigger del ultrasonido. Tras consultas en internet e información de la profesora de laboratorio, se decidió por usar el mismo de la FPGA (50MHz).
+- **Uso de timethreshold:** Para poder determinar si el objeto se detecta, se optó por usar timethreshold. Aunque se obtenía el valor, no se sabía claramente cómo usarlo en el código para detectar un objeto a cierta distancia. Se resuelve el problema al ver cómo se configura esta variable en sistemas que involucraban Arduino.
+### (cambiar a conveniencia) Errores cometidos en el proceso en el sensor de luz:
+- **Definición de encendido/apagado:** Ya que al detectar sol, la fotorresistencia envía un 1 a la FPGA. En los códigos se instanciaba de manera errónea. Se resuelve el problema al ver de manera práctica que sin tapar la fotorristencia siempre llegaba un cero a la FPGA.
 # 3. Explicación de códigos
 ## 3.1 Módulo UltrasonicSensor
 ```verilog
