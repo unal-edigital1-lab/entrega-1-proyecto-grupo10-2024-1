@@ -97,6 +97,65 @@ Interacción con el sensor de luz:
 -  0: si hay luz
 # 2. Explicación de códigos
 ## 2.1 Módulo UltrasonicSensor
+```verilog
+module UltrasonicSensor(
+    input clk,
+    output reg trigger,
+    input echo,
+    output reg object_detected
+);
+
+    reg [31:0] counter = 0; // Cuenta ciclos de reloj mientras se recibe Echo
+    reg [31:0] pulse_width = 0; // Duracion Echo
+    reg echo_start = 0, echo_end = 0;
+    reg [19:0] trig_counter = 0; // Cuenta ciclos mientras trigger está activo
+    reg trig_state = 0; // Trigger on u off
+
+    parameter integer clk_freq = 50000000;
+    parameter integer pulse_duration = clk_freq / 100000;
+    parameter integer max_distance_cm = 20;
+    parameter integer time_threshold = (max_distance_cm * clk_freq * 2) / 34000;
+
+    // Process for generating the trigger signal
+    always @(posedge clk) begin
+        if (trig_state == 0) begin
+            trigger <= 0;
+            trig_counter <= trig_counter + 1;
+            if (trig_counter == pulse_duration) begin
+                trigger <= 1;
+                trig_state <= 1;
+                trig_counter <= 0;
+            end
+        end else begin
+            trigger <= 0;
+            trig_state <= 0;
+        end
+    end
+
+    // Process for measuring the echo pulse width
+    always @(posedge clk) begin
+        if (echo == 1 && echo_start == 0) begin
+            echo_start <= 1;
+            counter <= 0;
+        end else if (echo == 0 && echo_start == 1) begin
+            echo_end <= 1;
+            pulse_width <= counter;
+            echo_start <= 0;
+        end else if (echo_start == 1) begin
+            counter <= counter + 1;
+        end
+    end
+
+    // Process to detect the object based on pulse width
+    always @(pulse_width) begin
+        if (pulse_width <= time_threshold)
+            object_detected <= 1;
+        else
+            object_detected <= 0;
+    end
+
+endmodule
+```
 Este módulo consta de tres bloques principales:
 - **Generación del trigger:** Este bloque genera un pulso para activar el sensor ultrasónico.
 - **Medición del ancho del pulso:** Este bloque mide el tiempo que el pulso "echo" permanece alto, lo que corresponde a la distancia a la que está el objeto.
@@ -117,7 +176,24 @@ Este módulo consta de tres bloques principales:
 - **Generación del Trigger:** El trigger se genera periódicamente y se envía al sensor ultrasónico.
 - **Medición del eco:** El eco medido se convierte en el ancho de pulso, que se mide en ciclos del reloj.
 - **Decisión de detección:** El ancho de pulso se compara con un valor de referencia para determinar si hay un objeto en el rango detectado.
+
 ## 2.2 Módulo del sensor de luz
+```verilog
+module sensor_luz (
+    input LDR_signal,  // Entrada digital del LDR
+    output reg sensor      // Salida para el LED
+);
+
+always @ (LDR_signal) begin
+    if (LDR_signal) begin
+        sensor <= 1'b1;  // Activa el LED en presencia de luz
+    end else begin
+        sensor <= 1'b0;  // Apaga el LED en ausencia de luz
+    end
+end
+
+endmodule
+```
 ### 2.2.1 Entradas y salidas
 - **Entrada:** LDR_signal, que es la señal digital proveniente del LDR (convertida previamente de analógica a digital por un ADC externo o un comparador).
 - **Salida:** sensor, que activa o desactiva el LED basado en la señal del LDR.
@@ -143,6 +219,7 @@ Este módulo tiene un solo bloque combinacional. El flujo de datos sigue un simp
 - **Entrada del LDR:** Se recibe la señal digital del LDR.
 - **Proceso combinacional:** Dependiendo de si la señal del LDR es 1 o 0, el LED se activa o desactiva.
 - **Salida del LED:** El valor de sensor se ajusta para encender o apagar el LED.
+
 ## 2.3 Módulo del BCD2SSEG
 ### 2.3.1 Entradas y salidas
 **Entrada:**
