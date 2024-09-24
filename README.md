@@ -95,22 +95,22 @@ Interacción con el sensor de luz:
 
 - 1: si el sensor detecta oscuridad durante 5 segundos el bicho se duerme automáticamente
 -  0: si hay luz
-# 2. Datapaths
+# 2. Explicación de códigos
 ## 2.1 Módulo UltrasonicSensor
 Este módulo consta de tres bloques principales:
 - **Generación del trigger:** Este bloque genera un pulso para activar el sensor ultrasónico.
 - **Medición del ancho del pulso:** Este bloque mide el tiempo que el pulso "echo" permanece alto, lo que corresponde a la distancia a la que está el objeto.
 - **Detección del objeto:** Basado en el ancho del pulso, se decide si un objeto está dentro del rango detectable.
-### 2.1.1 Datapath del bloque de generación de trigger
+### 2.1.1 Explicación del bloque de generación de trigger
 - **Señal de entrada:** clk (señal de reloj).
 - **Registro de estado de trigger:** El registro trig_state controla cuándo se activa el pulso de trigger. Este cambia entre 0 y 1, activando el trigger por una duración específica.
 - **Contador de ciclos:** trig_counter acumula ciclos del reloj hasta que alcanza la duración de pulso definida en pulse_duration. Una vez alcanzada, se genera el pulso de activación del sensor.
 - **Salida:** trigger es la señal que activa el sensor ultrasónico.
-### 2.1.2 Datapath del bloque de medición del ancho del pulso
+### 2.1.2 Explicación del bloque de medición del ancho del pulso
 - **Entrada:** echo es la señal que proviene del sensor ultrasónico y representa el tiempo que tarda en recibir el eco de vuelta.
 - **Contador de tiempo:** counter empieza a contar cuando echo está en alto, y sigue contando mientras se mantiene alta. Este contador mide el tiempo que transcurre entre el envío y la recepción del pulso ultrasónico.
 - **Registro del ancho del pulso:** pulse_width almacena el valor final del contador cuando el echo vuelve a cero, lo que representa la duración del eco.
-### 2.1.3 Datapath del bloque de detección del objeto
+### 2.1.3 Explicación del bloque de detección del objeto
 - **Entrada:** pulse_width se compara con el umbral time_threshold. Este valor umbral está relacionado con la distancia máxima que puede detectar el sensor.
 - **Salida:** object_detected se activa (es 1) si el ancho del pulso indica que un objeto está dentro de la distancia definida (pulse_width <= time_threshold).
 ### 2.1.4 Flujo de datos
@@ -121,7 +121,7 @@ Este módulo consta de tres bloques principales:
 ### 2.2.1 Entradas y salidas
 - **Entrada:** LDR_signal, que es la señal digital proveniente del LDR (convertida previamente de analógica a digital por un ADC externo o un comparador).
 - **Salida:** sensor, que activa o desactiva el LED basado en la señal del LDR.
-### 2.2.2 Datapath del módulo sensor_luz
+### 2.2.2 Explicación del módulo sensor_luz
 Este módulo tiene un solo bloque combinacional. El flujo de datos sigue un simple camino en el que el valor de la entrada (señal del LDR) controla directamente la salida (control del LED).
 **Bloques principales:**
 
@@ -132,7 +132,7 @@ Este módulo tiene un solo bloque combinacional. El flujo de datos sigue un simp
 **Control de la salida:**
 - Si LDR_signal == 1, el LED (sensor) se enciende (1'b1).
 - Si LDR_signal == 0, el LED (sensor) se apaga (1'b0).
-### 2.2.3 Datapath detallado
+### 2.2.3 Explicación detallada
 - **Entrada:** LDR_signal, que indica si el sensor detecta luz.
 - **Decisión:** El bloque lógico compara el valor de LDR_signal:
 - Si hay luz (LDR_signal == 1), el LED se enciende (sensor <= 1'b1).
@@ -154,7 +154,7 @@ BCD es un valor de 4 bits que representa un número en formato BCD (0-9 o A-F en
 **SSeg:** Es un valor de 7 bits que representa qué segmentos del display de 7 segmentos se deben encender.
 
 **an:** Es un valor de 2 bits que controla qué dígito del display múltiple (en este caso, se asume que el display tiene dos dígitos) está activo. En este caso, se configura en un valor fijo (2'b10).
-### 2.3.2 Datapath del módulo BCDtoSSeg
+### 2.3.2 Explicación del módulo BCDtoSSeg
 Este es un módulo combinacional, ya que la salida SSeg se actualiza directamente en función del valor de entrada BCD. Aquí está el flujo de datos y su procesamiento en detalle:
 
 **A.** Entrada del valor BCD
@@ -214,8 +214,8 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 - **an:** Selección del display de 7 segmentos.
 - **sseg:** Representación del número en el display de 7 segmentos.
 - **bandera:** Señal que se activa cuando el temporizador llega a 0.
-### 2.4.3 Datapath detallado
-- El datapath se puede dividir en varios bloques importantes:
+### 2.4.3 Explicación detallado
+- La Explicación se puede dividir en varios bloques importantes:
 **A.** Bloque de control de frecuencia del temporizador
   
 **Entradas:**
@@ -369,8 +369,8 @@ Una vez que se ha completado la escritura, el sistema vuelve al estado IDLE y es
 - **saciedad, diversion, descanso, salud, felicidad:** Variables de estado que representan los niveles actuales de saciedad, diversión, descanso, salud y felicidad.
 - **state:** Estado actual de la FSM.
 - **an, sseg:** Salidas para el control del display de 7 segmentos.
-### 2.6.2 Datapath general del módulo
-El datapath se organiza en tres bloques principales:
+### 2.6.2 Explicación general del módulo
+La Explicación se organiza en tres bloques principales:
 - **Bloque de control de estado (FSM):** Controla en qué estado está el sistema y define cómo cambiar de un estado a otro.
 - **Temporizador:** Genera señales de tiempo (bandera) que controlan la duración en cada estado.
 - **Ajuste de las variables de estado:** Actualiza los valores de saciedad, diversion, descanso, salud, y felicidad en función de las acciones tomadas en cada estado.
@@ -506,12 +506,12 @@ Las señales segment y anodos, generadas por la FSM, controlan un display de 7 s
 Botones del usuario y señales de sensores (boton_jugar, sensor_luz, echo, etc.).
 
 **Procesamiento:**
-- FSM (control_fsm): Toma decisiones basadas en los botones y las señales de los sensores.
-- Detección de luz (sensor_luz): Detecta si hay luz.
-- Detección de objetos (UltrasonicSensor): Detecta objetos cercanos.
-- Visualización (visualizacion_personalizada): Muestra el estado en la pantalla LCD.
+- **FSM (control_fsm):** Toma decisiones basadas en los botones y las señales de los sensores.
+- **Detección de luz (sensor_luz):** Detecta si hay luz.
+- **Detección de objetos (UltrasonicSensor):** Detecta objetos cercanos.
+- **Visualización (visualizacion_personalizada):** Muestra el estado en la pantalla LCD.
 
 **Salidas:**
-- Pantalla LCD: Controlada por visualizacion_personalizada.
-- Display de 7 segmentos: Controlado por control_fsm.
+- **Pantalla LCD:** Controlada por visualizacion_personalizada.
+- **Display de 7 segmentos:** Controlado por control_fsm.
 - Señal de trigger para el sensor ultrasónico.
