@@ -1,0 +1,14 @@
+-- begin_signature
+-- visualizacion_personalizada
+-- end_signature
+WIDTH=8;
+DEPTH=3;
+
+ADDRESS_RADIX=UNS;
+DATA_RADIX=BIN;
+
+CONTENT BEGIN
+	2 :	00000001;
+	1 :	00001100;
+	0 :	00111000;
+END;

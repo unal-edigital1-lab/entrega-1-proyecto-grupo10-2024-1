@@ -1,0 +1,16 @@
+
+State Machine - |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|create_char_task
+Name create_char_task.WRITE_LCD create_char_task.SET_CURSOR create_char_task.WRITE_CHARS create_char_task.SET_CGRAM_ADDR 
+create_char_task.SET_CGRAM_ADDR 0 0 0 0 
+create_char_task.WRITE_CHARS 0 0 1 1 
+create_char_task.SET_CURSOR 0 1 0 1 
+create_char_task.WRITE_LCD 1 0 0 1 
+
+State Machine - |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|fsm_state
+Name fsm_state.SET_CURSOR_AND_WRITE fsm_state.CLEAR_COUNTERS1 fsm_state.CREATE_CHARS fsm_state.CLEAR_COUNTERS0 fsm_state.INIT_CONFIG fsm_state.IDLE 
+fsm_state.IDLE 0 0 0 0 0 0 
+fsm_state.INIT_CONFIG 0 0 0 0 1 1 
+fsm_state.CLEAR_COUNTERS0 0 0 0 1 0 1 
+fsm_state.CREATE_CHARS 0 0 1 0 0 1 
+fsm_state.CLEAR_COUNTERS1 0 1 0 0 0 1 
+fsm_state.SET_CURSOR_AND_WRITE 1 0 0 0 0 1 
