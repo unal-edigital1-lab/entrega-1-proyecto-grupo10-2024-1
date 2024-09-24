@@ -95,6 +95,7 @@ Interacción con el sensor de luz:
 
 - 1: si el sensor detecta oscuridad durante 5 segundos el bicho se duerme automáticamente
 -  0: si hay luz
+# 2. Proceso 
 # 3. Explicación de códigos
 ## 3.1 Módulo UltrasonicSensor
 ```verilog
