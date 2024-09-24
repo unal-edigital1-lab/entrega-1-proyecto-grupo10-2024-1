@@ -95,8 +95,8 @@ Interacción con el sensor de luz:
 
 - 1: si el sensor detecta oscuridad durante 5 segundos el bicho se duerme automáticamente
 -  0: si hay luz
-# 2. Explicación de códigos
-## 2.1 Módulo UltrasonicSensor
+# 3. Explicación de códigos
+## 3.1 Módulo UltrasonicSensor
 ```verilog
 module UltrasonicSensor(
     input clk,
@@ -160,24 +160,24 @@ Este módulo consta de tres bloques principales:
 - **Generación del trigger:** Este bloque genera un pulso para activar el sensor ultrasónico.
 - **Medición del ancho del pulso:** Este bloque mide el tiempo que el pulso "echo" permanece alto, lo que corresponde a la distancia a la que está el objeto.
 - **Detección del objeto:** Basado en el ancho del pulso, se decide si un objeto está dentro del rango detectable.
-### 2.1.1 Explicación del bloque de generación de trigger
+### 3.1.1 Explicación del bloque de generación de trigger
 - **Señal de entrada:** clk (señal de reloj).
 - **Registro de estado de trigger:** El registro trig_state controla cuándo se activa el pulso de trigger. Este cambia entre 0 y 1, activando el trigger por una duración específica.
 - **Contador de ciclos:** trig_counter acumula ciclos del reloj hasta que alcanza la duración de pulso definida en pulse_duration. Una vez alcanzada, se genera el pulso de activación del sensor.
 - **Salida:** trigger es la señal que activa el sensor ultrasónico.
-### 2.1.2 Explicación del bloque de medición del ancho del pulso
+### 3.1.2 Explicación del bloque de medición del ancho del pulso
 - **Entrada:** echo es la señal que proviene del sensor ultrasónico y representa el tiempo que tarda en recibir el eco de vuelta.
 - **Contador de tiempo:** counter empieza a contar cuando echo está en alto, y sigue contando mientras se mantiene alta. Este contador mide el tiempo que transcurre entre el envío y la recepción del pulso ultrasónico.
 - **Registro del ancho del pulso:** pulse_width almacena el valor final del contador cuando el echo vuelve a cero, lo que representa la duración del eco.
-### 2.1.3 Explicación del bloque de detección del objeto
+### 3.1.3 Explicación del bloque de detección del objeto
 - **Entrada:** pulse_width se compara con el umbral time_threshold. Este valor umbral está relacionado con la distancia máxima que puede detectar el sensor.
 - **Salida:** object_detected se activa (es 1) si el ancho del pulso indica que un objeto está dentro de la distancia definida (pulse_width <= time_threshold).
-### 2.1.4 Flujo de datos
+### 3.1.4 Flujo de datos
 - **Generación del Trigger:** El trigger se genera periódicamente y se envía al sensor ultrasónico.
 - **Medición del eco:** El eco medido se convierte en el ancho de pulso, que se mide en ciclos del reloj.
 - **Decisión de detección:** El ancho de pulso se compara con un valor de referencia para determinar si hay un objeto en el rango detectado.
 
-## 2.2 Módulo del sensor de luz
+## 3.2 Módulo del sensor de luz
 ```verilog
 module sensor_luz (
     input LDR_signal,  // Entrada digital del LDR
@@ -194,10 +194,10 @@ end
 
 endmodule
 ```
-### 2.2.1 Entradas y salidas
+### 3.2.1 Entradas y salidas
 - **Entrada:** LDR_signal, que es la señal digital proveniente del LDR (convertida previamente de analógica a digital por un ADC externo o un comparador).
 - **Salida:** sensor, que activa o desactiva el LED basado en la señal del LDR.
-### 2.2.2 Explicación del módulo sensor_luz
+### 3.2.2 Explicación del módulo sensor_luz
 Este módulo tiene un solo bloque combinacional. El flujo de datos sigue un simple camino en el que el valor de la entrada (señal del LDR) controla directamente la salida (control del LED).
 **Bloques principales:**
 
@@ -208,20 +208,20 @@ Este módulo tiene un solo bloque combinacional. El flujo de datos sigue un simp
 **Control de la salida:**
 - Si LDR_signal == 1, el LED (sensor) se enciende (1'b1).
 - Si LDR_signal == 0, el LED (sensor) se apaga (1'b0).
-### 2.2.3 Explicación detallada
+### 3.2.3 Explicación detallada
 - **Entrada:** LDR_signal, que indica si el sensor detecta luz.
 - **Decisión:** El bloque lógico compara el valor de LDR_signal:
 - Si hay luz (LDR_signal == 1), el LED se enciende (sensor <= 1'b1).
 - Si no hay luz (LDR_signal == 0), el LED se apaga (sensor <= 1'b0).
 - **Salida:** El estado de sensor (encendido o apagado) se actualiza según el valor de la señal del LDR.
 
-### 2.2.4 Flujo de datos:
+### 3.2.4 Flujo de datos:
 - **Entrada del LDR:** Se recibe la señal digital del LDR.
 - **Proceso combinacional:** Dependiendo de si la señal del LDR es 1 o 0, el LED se activa o desactiva.
 - **Salida del LED:** El valor de sensor se ajusta para encender o apagar el LED.
 
-## 2.3 Módulo del BCD2SSEG
-### 2.3.1 Entradas y salidas
+## 3.3 Módulo del BCD2SSEG
+### 3.3.1 Entradas y salidas
 **Entrada:**
 
 BCD es un valor de 4 bits que representa un número en formato BCD (0-9 o A-F en hexadecimal).
@@ -231,7 +231,7 @@ BCD es un valor de 4 bits que representa un número en formato BCD (0-9 o A-F en
 **SSeg:** Es un valor de 7 bits que representa qué segmentos del display de 7 segmentos se deben encender.
 
 **an:** Es un valor de 2 bits que controla qué dígito del display múltiple (en este caso, se asume que el display tiene dos dígitos) está activo. En este caso, se configura en un valor fijo (2'b10).
-### 2.3.2 Explicación del módulo BCDtoSSeg
+### 3.3.2 Explicación del módulo BCDtoSSeg
 Este es un módulo combinacional, ya que la salida SSeg se actualiza directamente en función del valor de entrada BCD. Aquí está el flujo de datos y su procesamiento en detalle:
 
 **A.** Entrada del valor BCD
@@ -249,7 +249,7 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 **C.** Activación del display
 - La salida an es fija en 2'b10. Esto indica que se activa un dígito específico del display de 7 segmentos en un sistema que soporta múltiples dígitos.
 - No hay control dinámico de an en este módulo, ya que está configurado de manera fija.
-### 2.3.3 Flujo de datos
+### 3.3.3 Flujo de datos
 **Entrada BCD:**
 - Se recibe un número en formato BCD de 4 bits.
 
@@ -260,7 +260,7 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 **Salida del valor convertido:**
 - La salida SSeg se actualiza con el valor correcto para encender los LEDs necesarios para representar el número o letra.
 - La salida an mantiene activo el dígito del display donde se mostrará el valor.
-### 2.3.4 Resumen
+### 3.3.4 Resumen
 **Entrada:**
 - BCD (4 bits).
 
@@ -275,13 +275,13 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 - Si el valor de entrada BCD = 4'b0011 (que representa el número 3):
 - El bloque case selecciona la salida correspondiente SSeg = 7'b0000110 (que enciende los LEDs necesarios para mostrar un "3" en el display).
 - La salida an se fija en 2'b10, activando el segundo dígito del display.
-## 2.4 Módulo Temporizador de 7 segmentos
-### 2.4.1. Componentes del Módulo
+## 3.4 Módulo Temporizador de 7 segmentos
+### 3.4.1. Componentes del Módulo
 - Este módulo es un temporizador de 7 segmentos que ajusta su velocidad en función de un botón (fast_button) y tiene varias funciones:
 - Control del temporizador con un botón para cambiar la frecuencia.
 - Cuenta regresiva de un valor BCD (de 9 a 0).
 - Bandera de estado (bandera) que indica cuando el temporizador llega a 0.
-### 2.4.2 Entradas y Salidas
+### 3.4.2 Entradas y Salidas
 **Entradas:**
 - **clk:** Señal de reloj.
 - **reset:** Para reiniciar el temporizador.
@@ -291,7 +291,7 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 - **an:** Selección del display de 7 segmentos.
 - **sseg:** Representación del número en el display de 7 segmentos.
 - **bandera:** Señal que se activa cuando el temporizador llega a 0.
-### 2.4.3 Explicación detallado
+### 3.4.3 Explicación detallada
 - La Explicación se puede dividir en varios bloques importantes:
 **A.** Bloque de control de frecuencia del temporizador
   
@@ -335,7 +335,7 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 - Este bloque convierte el valor en BCD a la representación correspondiente en el display de 7 segmentos.
 - **Entrada:** BCD (el valor actual del temporizador en formato BCD).
 - **Salida:** sseg (los 7 segmentos que forman el número en el display) y an (la selección del dígito a mostrar).
-### 2.4.4 Flujo de Datos Completo
+### 3.4.4 Flujo de Datos Completo
 **Control de la Frecuencia:**
 - El temporizador cuenta los ciclos del reloj según la frecuencia configurada.
 - Dependiendo del botón fast_button, se ajusta la velocidad a normal o rápida.
@@ -350,7 +350,7 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 
 **Visualización en el display:**
 - El valor en BCD se convierte y muestra en el display de 7 segmentos mediante el bloque BCDtoSSeg.
-### 2.4.5 Resumen
+### 3.4.5 Resumen
 - **Entradas:** clk, reset, fast_button.
 
 **Procesamiento:**
@@ -358,8 +358,8 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 - Segundero que cuenta de 0 a 60.
 - BCD que cuenta de 9 a 0.
 - **Salidas:** sseg y an para mostrar los números en el display, y bandera que indica el fin del temporizador.
-## 2.5 Módulo visualización personalizada
-### 2.5.1 Entradas y Salidas
+## 3.5 Módulo visualización personalizada
+### 3.5.1 Entradas y Salidas
 **Entradas:**
 * **clk:** Señal de reloj para la sincronización.
 * **rst:** Señal de reinicio para restaurar el estado inicial del sistema.
@@ -372,13 +372,13 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 - **rw:** Señal de lectura/escritura para la pantalla.
 - **enable:** Señal que habilita la escritura en la pantalla.
 - **data:** Datos enviados a la pantalla LCD (caracteres o comandos de configuración).
-## 2.5.2 Descripción general del módulo
+## 3.5.2 Descripción general del módulo
 Este módulo se divide en varios bloques funcionales:
 - **Control del estado:** Una máquina de estados finita (FSM) que decide qué comando o dato se debe enviar a la pantalla LCD en cada momento.
 - **Generación de caracteres personalizados:** Se definen caracteres específicos que se almacenan en la CGRAM de la pantalla LCD.
 - **Escritura de datos en la pantalla:** Actualización de los datos visibles en la pantalla, incluyendo barras de estado y caracteres.
 - **Divisor de frecuencia:** Ajusta la velocidad de operación de la pantalla LCD para cumplir con las restricciones de tiempo.
-## 2.5.3 Bloque de control del estado (FSM)
+## 3.5.3 Bloque de control del estado (FSM)
 Este bloque es una máquina de estados finita que se encarga de secuenciar las distintas fases del proceso de visualización en la pantalla LCD.
 
 **Entradas:**
@@ -394,7 +394,7 @@ Este bloque es una máquina de estados finita que se encarga de secuenciar las d
 
 **Salidas:**
 - Control de las señales rs, rw, data, y actualización de los contadores internos como command_counter y data_counter.
-## 2.5.4 Generación de caracteres personalizados
+## 3.5.4 Generación de caracteres personalizados
 - Este bloque se encarga de escribir caracteres personalizados en la CGRAM de la pantalla LCD. Cada carácter tiene 8 bytes que definen su forma.
 
 **Entradas:**
@@ -404,7 +404,7 @@ Este bloque es una máquina de estados finita que se encarga de secuenciar las d
 **Salidas:**
 - **data:** En este caso, los datos que se escriben en la pantalla son los bytes que forman los caracteres personalizados.
 - **rs y rw:** Se controlan para asegurarse de que los datos se escriben en la CGRAM y no en la DDRAM (que es donde se almacenan los datos visibles en la pantalla).
-## 2.5.5 Escritura de datos en la pantalla
+## 3.5.5 Escritura de datos en la pantalla
 Este bloque se encarga de mostrar los datos visuales en la pantalla. Se muestran los caracteres personalizados, las barras de estado (saciedad, diversión, etc.), y los indicadores (luz, cercanía, etc.).
 
 **Entradas:**
@@ -414,13 +414,13 @@ Este bloque se encarga de mostrar los datos visuales en la pantalla. Se muestran
 **Salidas:**
 - **data:** El valor que se envía a la pantalla para representar el contenido actual (ya sea un carácter o una barra de estado).
 - **done_lcd_write:** Señal que indica cuándo se ha completado la escritura en la pantalla.
-## 2.5.6 Divisor de frecuencia
+## 3.5.6 Divisor de frecuencia
 Este bloque reduce la frecuencia de la señal de reloj (clk) para que la pantalla LCD pueda operar a la velocidad requerida.
 
 **Entrada:** clk.
 
 **Salida:** clk_16ms, que se utiliza como reloj para el resto de los bloques del sistema.
-## 2.5.7 Flujo de datos completo
+## 3.5.7 Flujo de datos completo
 **Configuración inicial:**
 - El sistema comienza en el estado IDLE. Una vez que el sistema está listo (ready_i), pasa al estado INIT_CONFIG.
 - En INIT_CONFIG, se envían los comandos de configuración inicial de la pantalla.
@@ -435,8 +435,8 @@ Este bloque reduce la frecuencia de la señal de reloj (clk) para que la pantall
 
 **Actualización continua:**
 Una vez que se ha completado la escritura, el sistema vuelve al estado IDLE y espera la siguiente actualización.
-## 2.6 Módulo control máquina de estados
-### 2.6.1 Entradas y Salidas
+## 3.6 Módulo control máquina de estados
+### 3.6.1 Entradas y Salidas
 **Entradas:**
 - **clk:** Señal de reloj para sincronizar la FSM.
 - **rst:** Señal de reinicio para volver al estado inicial.
@@ -446,12 +446,12 @@ Una vez que se ha completado la escritura, el sistema vuelve al estado IDLE y es
 - **saciedad, diversion, descanso, salud, felicidad:** Variables de estado que representan los niveles actuales de saciedad, diversión, descanso, salud y felicidad.
 - **state:** Estado actual de la FSM.
 - **an, sseg:** Salidas para el control del display de 7 segmentos.
-### 2.6.2 Explicación general del módulo
+### 3.6.2 Explicación general del módulo
 La Explicación se organiza en tres bloques principales:
 - **Bloque de control de estado (FSM):** Controla en qué estado está el sistema y define cómo cambiar de un estado a otro.
 - **Temporizador:** Genera señales de tiempo (bandera) que controlan la duración en cada estado.
 - **Ajuste de las variables de estado:** Actualiza los valores de saciedad, diversion, descanso, salud, y felicidad en función de las acciones tomadas en cada estado.
-### 2.6.3 Bloque de control de estado (FSM)
+### 3.6.3 Bloque de control de estado (FSM)
 Este es el bloque central de la máquina de estados. Según las entradas (botones) y el estado actual, la FSM cambia de un estado a otro y ajusta los niveles de saciedad, diversión, etc.
 
 **Estados:**
@@ -460,14 +460,14 @@ Este es el bloque central de la máquina de estados. Según las entradas (botone
 - **ESTADO_DIVERSION:** Si se presiona boton_jugar, el sistema entra en este estado, donde aumentan la diversión y la felicidad, pero disminuye el descanso.
 - **ESTADO_ALIMENTAR, ESTADO_DESCANSO, ESTADO_SALUD, ESTADO_FELIZ:** Estados correspondientes a otras acciones como alimentar, descansar, curar y dar caricias, donde las variables relevantes aumentan.
 ESTADO_MUERTO: Si saciedad o salud llega a 0, el sistema entra en este estado, donde todas las variables se ponen a 0 y el Tamagotchi "muere".
-### 2.6.4 Bloque del temporizador
+### 3.6.4 Bloque del temporizador
 El módulo Temporizador7seg genera una señal (bandera) que actúa como temporizador. Esta señal se utiliza para controlar la duración de cada estado y desencadenar las transiciones de un estado a otro. Cuando la señal bandera está activa, el sistema puede realizar acciones como disminuir o aumentar los valores de saciedad, diversión, etc.
 
 **Entradas:**
 - clk, rst, fast_button: Señales que controlan el temporizador.
 **Salidas:**
 - **bandera:** Señal que indica cuándo el temporizador ha terminado, lo que permite las transiciones entre estados en la FSM.
-### 2.6.5 Ajuste de las variables de estado
+### 3.6.5 Ajuste de las variables de estado
 Este bloque se encarga de ajustar los valores de saciedad, diversion, descanso, salud, y felicidad en función de las acciones del usuario y las transiciones entre estados. Por ejemplo, en el estado ESTADO_DIVERSION, los valores de diversión y felicidad aumentan, mientras que el valor de descanso disminuye.
 
 **Entradas:**
@@ -476,7 +476,7 @@ Este bloque se encarga de ajustar los valores de saciedad, diversion, descanso, 
 
 **Salidas:**
 Las variables de estado (saciedad, diversion, etc.) que se ajustan según el estado actual.
-### 2.6.6 Flujo de datos completo
+### 3.6.6 Flujo de datos completo
 Estado inicial (ESTADO_IDEAL):
 - El sistema comienza en el estado ESTADO_IDEAL, donde todas las variables (saciedad, diversion, etc.) están al máximo. El sistema permanece en este estado durante un tiempo controlado por el temporizador (timer).
 
@@ -491,14 +491,14 @@ Estado inicial (ESTADO_IDEAL):
 
 **Estado muerto (ESTADO_MUERTO):**
 Si las variables saciedad o salud llegan a 0 en el estado ESTADO_NEUTRO, el sistema transiciona al estado ESTADO_MUERTO, donde todas las variables se ponen a 0 y el Tamagotchi muere.
-### 2.6.7 Resumen
+### 3.6.7 Resumen
 **Entradas:**
 - clk, rst, botones de acción (boton_jugar, boton_alimentar, etc.), señal del temporizador (bandera).
 - **FSM (Máquina de estados):** Controla en qué estado está el sistema (ideal, neutro, jugar, alimentar, etc.) y cuándo realizar las transiciones entre estados.
 - **Temporizador:** Genera la señal de temporización (bandera) que controla cuánto tiempo permanece el sistema en cada estado.
 - **Ajuste de las variables:** En cada estado, las variables de saciedad, diversion, descanso, salud, y felicidad se ajustan según la acción tomada.
-## 2.7 Módulo de Tamagotchi
-### 2.7.1 Entradas y Salidas
+## 3.7 Módulo de Tamagotchi
+### 3.7.1 Entradas y Salidas
 **Entradas:**
 - **boton_jugar, boton_alimentar, boton_curar, boton_acelerar:** Botones que permiten al usuario interactuar con el Tamagotchi (jugar, alimentar, curar, acelerar el tiempo).
 - **sensor_luz:** Señal del sensor de luz que detecta si hay suficiente luz.
@@ -512,7 +512,7 @@ Si las variables saciedad o salud llegan a 0 en el estado ESTADO_NEUTRO, el sist
 - **anodos:** Control de los anodos del display.
 - **rs, rw, enable, data:** Señales de control para la pantalla LCD.
 - **prb:** Señal que replica el botón de aceleración (boton_acelerar).
-### 2.7.2 Explicación general
+### 3.7.2 Explicación general
 El módulo TamaguchiUpdateNewPro conecta varios submódulos que, en conjunto, permiten interactuar con el Tamagotchi, mostrar información en un display de 7 segmentos y una pantalla LCD, y detectar el entorno mediante sensores.
 
 **A.** Asignaciones iniciales
@@ -557,7 +557,7 @@ Este submódulo controla la pantalla LCD, mostrando los estados del Tamagotchi (
 **Salidas:**
 
 Señales de control para la pantalla LCD (rs, rw, enable, data).
-### 2.7.3 Flujo de datos
+### 3.7.3 Flujo de datos
 **Interacción del usuario:**
 - El usuario puede presionar los botones (boton_jugar, boton_alimentar, etc.) que sirven como entradas para el control FSM (control_fsm).
 - El botón boton_acelerar se utiliza para aumentar la velocidad del temporizador, y su señal se conecta a varios módulos.
@@ -577,7 +577,7 @@ Señales de control para la pantalla LCD (rs, rw, enable, data).
 **Visualización en el display de 7 segmentos:**
 
 Las señales segment y anodos, generadas por la FSM, controlan un display de 7 segmentos que puede mostrar información adicional (por ejemplo, tiempo o estado).
-### 2.7.4 Resumen
+### 3.7.4 Resumen
 **Entradas:**
 
 Botones del usuario y señales de sensores (boton_jugar, sensor_luz, echo, etc.).
