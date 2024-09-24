@@ -1,0 +1,144 @@
+module control_fsm (
+    input wire clk,          // Señal de reloj
+    input wire rst,          // Señal de reset
+    input wire boton_jugar,  // Botón para jugar
+    input wire boton_alimentar,
+    input wire boton_dormir,
+    input wire boton_curar,
+    input wire boton_caricia,
+    input wire fast_button,
+    output reg [3:0] saciedad,    // Estado de saciedad
+    output reg [3:0] diversion,    // Estado de diversión
+    output reg [3:0] descanso,    // Estado de descanso
+    output reg [3:0] salud,    // Estado de salud
+    output reg [3:0] felicidad,   // Estado de felicidad
+    output reg [2:0] state,   // Estado actual de la FSM
+    output wire [3:0] an,    // Anodos del display de 7 segmentos
+    output wire [6:0] sseg  // Segmentos del display de 7 segmentos
+);
+
+// Definición de los estados
+localparam ESTADO_IDEAL     = 3'b000;
+localparam ESTADO_NEUTRO    = 3'b001;
+localparam ESTADO_DIVERSION = 3'b010;
+localparam ESTADO_ALIMENTAR = 3'b011;
+localparam ESTADO_DESCANSO  = 3'b100;
+localparam ESTADO_SALUD     = 3'b101;
+localparam ESTADO_FELIZ     = 3'b110;
+
+reg [15:0] timer;  // Temporizador para control de estados
+wire bandera;
+Temporizador7seg temporizador_inst (
+    .clk(clk),
+    .reset(rst),
+    .fast_button(fast_button),
+    .an(an),
+    .sseg(sseg),
+    .bandera(bandera)   // Bandera que se activa cuando el temporizador llega a 0
+);
+// Inicialización de los estados
+initial begin
+    saciedad = 4'd15;  // Saciedad al máximo en el estado ideal
+    diversion = 4'd15;  // Diversión al máximo en el estado ideal
+    descanso = 4'd15;  // Descanso al máximo en el estado ideal
+    salud = 4'd15;  // Salud al máximo en el estado ideal
+    felicidad = 4'd15; // Felicidad al máximo en el estado ideal
+    state = ESTADO_IDEAL;  // Estado inicial
+    timer = 16'd0;         // Temporizador en 0
+end
+
+// Máquina de estados
+always @(posedge clk or posedge rst) begin
+    if (rst) begin
+        // Resetear todos los valores a sus estados iniciales
+        saciedad <= 4'd15;
+        diversion <= 4'd15;
+        descanso <= 4'd15;
+        salud <= 4'd15;
+        felicidad <= 4'd15;
+        state <= ESTADO_IDEAL;
+        timer <= 16'd0;
+    end else begin
+        // Actualizar el estado de la FSM
+        case (state)
+            ESTADO_IDEAL: begin
+                // En el estado ideal, todos los valores están al máximo
+                saciedad <= 4'd15;
+                diversion <= 4'd15;
+                descanso <= 4'd15;
+                salud <= 4'd15;
+                felicidad <= 4'd15;
+
+                // Temporizador para pasar al estado neutro
+                if (timer == 16'd10) begin  // Temporizador ajustado para simulación rápida
+                    state <= ESTADO_NEUTRO;
+                    timer <= 16'd0;
+                end else begin
+                    timer <= timer + 1;
+                end
+            end
+
+            ESTADO_NEUTRO: begin
+                // En el estado neutro, los valores empiezan a bajar lentamente
+                if (bandera) begin  // Temporizador ajustado para simulación rápida
+                    saciedad <= (saciedad > 0) ? saciedad - 1 : 0;
+                    diversion <= (diversion > 0) ? diversion - 1 : 0;
+                    descanso <= (descanso > 0) ? descanso - 1 : 0;
+                    salud <= (salud > 0) ? salud - 1 : 0;
+                    felicidad <= (felicidad > 0) ? felicidad - 1 : 0;
+                    timer <= 16'd0;
+                end else begin
+                    timer <= timer + 1;
+                end
+
+                // Si se presiona el botón de jugar, cambiar al estado de diversión
+                if (boton_jugar) begin
+                    state <= ESTADO_DIVERSION;
+                end else if (boton_alimentar)begin
+                    state <= ESTADO_ALIMENTAR;
+                end else if(boton_dormir)begin
+                    state<= ESTADO_DESCANSO;
+                end else if(boton_curar)begin
+                    state <= ESTADO_SALUD;
+                end else if (boton_caricia)begin 
+                    state <= ESTADO_FELIZ;  
+            end
+            end
+
+            ESTADO_DIVERSION: begin
+                // En el estado de diversión, aumentan diversión y felicidad
+                diversion <= (diversion < 15) ? diversion + 1 : 15;
+                felicidad <= (felicidad < 15) ? felicidad + 1 : 15;
+                descanso <= (descanso > 0) ? descanso - 2 : descanso;
+
+                // Después de jugar, volver al estado neutro
+                state <= ESTADO_NEUTRO;
+            end
+            ESTADO_ALIMENTAR: begin
+                if (saciedad < 4'd15) saciedad <= saciedad + 1;  // Aumentar saciedad al alimentar
+                timer <= 16'd0;
+                state <= ESTADO_NEUTRO;  // Volver al estado neutro
+            end
+            ESTADO_DESCANSO: begin
+                if (descanso < 4'd15) descanso <= descanso + 1;
+                state <= ESTADO_NEUTRO;  // Volver al estado neutro
+            end
+            ESTADO_SALUD: begin
+                if (salud < 4'd15) salud <= salud + 1;
+                state <= ESTADO_NEUTRO;
+
+            end
+            ESTADO_FELIZ: begin 
+                if (felicidad < 4'd15) felicidad <= felicidad + 1;
+                state <= ESTADO_NEUTRO;
+            end
+
+            default: begin
+                // Por defecto, regresar al estado ideal
+                state <= ESTADO_IDEAL;
+            end
+        endcase
+    end
+end
+
+endmodule

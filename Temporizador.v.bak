@@ -1,0 +1,80 @@
+module Temporizador7seg (
+    input clk,
+    input reset,
+    input fast_button, // Botón para acelerar el temporizador
+    output [3:0] an,
+    output [6:0] sseg,
+    output reg bandera
+);
+
+    reg [3:0] BCD;
+
+    // Parámetro ajustable según el botón
+    parameter count_seg_normal = 5; // Frecuencia para 1 Hz
+    parameter count_seg_fast = 5;    // Frecuencia más rápida (por ejemplo, 5 Hz)
+    reg [24:0] count_seg;  // Contador dinámico para cambiar la velocidad
+    reg [24:0] counter_seg;
+    reg freq;
+    reg [5:0] segundero;
+
+    initial begin
+        counter_seg = 'd0;
+        freq = 'd0;
+        segundero = 'd0;
+        BCD = 'd9;
+        bandera = 'd0;
+    end
+
+    // Temporizador que cambia su velocidad según el botón presionado
+    always @(posedge clk) begin
+        if (reset == 0) begin
+            counter_seg  <= 0;
+            freq <= 'b0;
+        end else if (counter_seg == count_seg) begin
+            freq <= ~freq;
+            counter_seg <= 'd0;
+        end else begin
+            counter_seg <= counter_seg + 1;
+        end
+
+             if (counter_seg == count_seg) begin
+            bandera <= 0;
+        end else begin
+            bandera  <= 1;
+        end
+
+    end
+
+    // Ajuste de velocidad cuando se presiona el botón
+    always @(*) begin
+        if (fast_button == 0) begin
+            count_seg = count_seg_fast;  // Temporizador rápido
+        end else begin
+            count_seg = count_seg_normal; // Temporizador normal
+        end
+    end
+
+    // Lógica para el segundero
+    always @(posedge freq or negedge reset) begin
+        if (reset == 0) begin
+            segundero <= 'd0;
+            BCD <= 4'b1001;
+            bandera <= 0;  // Reiniciamos la bandera
+        end else if (segundero == 60) begin
+            segundero <= 0;
+            BCD <= BCD - 1;
+        end else if (BCD == 0 & segundero == 59) begin
+            BCD <= 10;
+        end else begin
+            segundero <= segundero + 1;
+        end
+
+
+        // Activamos la bandera cuando BCD llega a 0
+
+    end
+
+    // Instancia del módulo de conversión BCD a 7 segmentos
+    BCDtoSSeg visualizador (.BCD(BCD), .SSeg(sseg), .an(an));
+
+endmodule
