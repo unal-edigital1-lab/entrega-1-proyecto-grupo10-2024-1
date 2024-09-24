@@ -1,0 +1,113 @@
+------------------------------------------------------------
+Timing Analyzer Summary
+------------------------------------------------------------
+
+Type  : Slow 1200mV 85C Model Setup 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : -6.530
+TNS   : -230.861
+
+Type  : Slow 1200mV 85C Model Setup 'clk'
+Slack : -6.324
+TNS   : -657.019
+
+Type  : Slow 1200mV 85C Model Setup 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : -2.102
+TNS   : -19.439
+
+Type  : Slow 1200mV 85C Model Hold 'clk'
+Slack : 0.432
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : 0.432
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Hold 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : 0.453
+TNS   : 0.000
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'clk'
+Slack : -3.000
+TNS   : -276.608
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : -1.487
+TNS   : -74.350
+
+Type  : Slow 1200mV 85C Model Minimum Pulse Width 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : -1.487
+TNS   : -16.357
+
+Type  : Slow 1200mV 0C Model Setup 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : -6.014
+TNS   : -212.384
+
+Type  : Slow 1200mV 0C Model Setup 'clk'
+Slack : -5.978
+TNS   : -603.329
+
+Type  : Slow 1200mV 0C Model Setup 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : -1.932
+TNS   : -17.213
+
+Type  : Slow 1200mV 0C Model Hold 'clk'
+Slack : 0.381
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : 0.381
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Hold 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : 0.402
+TNS   : 0.000
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'clk'
+Slack : -3.000
+TNS   : -276.608
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : -1.487
+TNS   : -74.350
+
+Type  : Slow 1200mV 0C Model Minimum Pulse Width 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : -1.487
+TNS   : -16.357
+
+Type  : Fast 1200mV 0C Model Setup 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : -2.150
+TNS   : -72.501
+
+Type  : Fast 1200mV 0C Model Setup 'clk'
+Slack : -2.074
+TNS   : -176.729
+
+Type  : Fast 1200mV 0C Model Setup 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : -0.413
+TNS   : -2.677
+
+Type  : Fast 1200mV 0C Model Hold 'clk'
+Slack : 0.178
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : 0.178
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Hold 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : 0.187
+TNS   : 0.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'clk'
+Slack : -3.000
+TNS   : -200.095
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'visualizacion_personalizada:diahdias|clk_16ms'
+Slack : -1.000
+TNS   : -50.000
+
+Type  : Fast 1200mV 0C Model Minimum Pulse Width 'control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|freq'
+Slack : -1.000
+TNS   : -11.000
+
+------------------------------------------------------------

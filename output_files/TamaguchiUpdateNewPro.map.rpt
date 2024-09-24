@@ -1,0 +1,533 @@
+Analysis & Synthesis report for TamaguchiUpdateNewPro
+Fri Sep 20 17:18:00 2024
+Quartus Prime Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition
+
+
+---------------------
+; Table of Contents ;
+---------------------
+  1. Legal Notice
+  2. Analysis & Synthesis Summary
+  3. Analysis & Synthesis Settings
+  4. Parallel Compilation
+  5. Analysis & Synthesis Source Files Read
+  6. Analysis & Synthesis Resource Usage Summary
+  7. Analysis & Synthesis Resource Utilization by Entity
+  8. State Machine - |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|create_char_task
+  9. State Machine - |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|fsm_state
+ 10. Registers Removed During Synthesis
+ 11. General Register Statistics
+ 12. Inverted Register Statistics
+ 13. Multiplexer Restructuring Statistics (Restructuring Performed)
+ 14. Parameter Settings for User Entity Instance: control_fsm:modulo_principal|Temporizador7seg:temporizador_inst
+ 15. Parameter Settings for User Entity Instance: UltrasonicSensor:dhaissdnas
+ 16. Parameter Settings for User Entity Instance: visualizacion_personalizada:diahdias
+ 17. Post-Synthesis Netlist Statistics for Top Partition
+ 18. Elapsed Time Per Partition
+ 19. Analysis & Synthesis Messages
+ 20. Analysis & Synthesis Suppressed Messages
+
+
+
+----------------
+; Legal Notice ;
+----------------
+Copyright (C) 2024  Intel Corporation. All rights reserved.
+Your use of Intel Corporation's design tools, logic functions 
+and other software and tools, and any partner logic 
+functions, and any output files from any of the foregoing 
+(including device programming or simulation files), and any 
+associated documentation or information are expressly subject 
+to the terms and conditions of the Intel Program License 
+Subscription Agreement, the Intel Quartus Prime License Agreement,
+the Intel FPGA IP License Agreement, or other applicable license
+agreement, including, without limitation, that your use is for
+the sole purpose of programming logic devices manufactured by
+Intel and sold by Intel or its authorized distributors.  Please
+refer to the applicable agreement for further details, at
+https://fpgasoftware.intel.com/eula.
+
+
+
++-------------------------------------------------------------------------------------+
+; Analysis & Synthesis Summary                                                        ;
++------------------------------------+------------------------------------------------+
+; Analysis & Synthesis Status        ; Successful - Fri Sep 20 17:18:00 2024          ;
+; Quartus Prime Version              ; 23.1std.1 Build 993 05/14/2024 SC Lite Edition ;
+; Revision Name                      ; TamaguchiUpdateNewPro                          ;
+; Top-level Entity Name              ; TamaguchiUpdateNewPro                          ;
+; Family                             ; Cyclone IV E                                   ;
+; Total logic elements               ; 778                                            ;
+;     Total combinational functions  ; 746                                            ;
+;     Dedicated logic registers      ; 245                                            ;
+; Total registers                    ; 245                                            ;
+; Total pins                         ; 30                                             ;
+; Total virtual pins                 ; 0                                              ;
+; Total memory bits                  ; 0                                              ;
+; Embedded Multiplier 9-bit elements ; 0                                              ;
+; Total PLLs                         ; 0                                              ;
++------------------------------------+------------------------------------------------+
+
+
++------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Settings                                                                                    ;
++------------------------------------------------------------------+-----------------------+-----------------------+
+; Option                                                           ; Setting               ; Default Value         ;
++------------------------------------------------------------------+-----------------------+-----------------------+
+; Device                                                           ; EP4CE10E22C8          ;                       ;
+; Top-level entity name                                            ; TamaguchiUpdateNewPro ; TamaguchiUpdateNewPro ;
+; Family name                                                      ; Cyclone IV E          ; Cyclone V             ;
+; Use smart compilation                                            ; Off                   ; Off                   ;
+; Enable parallel Assembler and Timing Analyzer during compilation ; On                    ; On                    ;
+; Enable compact report table                                      ; Off                   ; Off                   ;
+; Restructure Multiplexers                                         ; Auto                  ; Auto                  ;
+; Create Debugging Nodes for IP Cores                              ; Off                   ; Off                   ;
+; Preserve fewer node names                                        ; On                    ; On                    ;
+; Intel FPGA IP Evaluation Mode                                    ; Enable                ; Enable                ;
+; Verilog Version                                                  ; Verilog_2001          ; Verilog_2001          ;
+; VHDL Version                                                     ; VHDL_1993             ; VHDL_1993             ;
+; State Machine Processing                                         ; Auto                  ; Auto                  ;
+; Safe State Machine                                               ; Off                   ; Off                   ;
+; Extract Verilog State Machines                                   ; On                    ; On                    ;
+; Extract VHDL State Machines                                      ; On                    ; On                    ;
+; Ignore Verilog initial constructs                                ; Off                   ; Off                   ;
+; Iteration limit for constant Verilog loops                       ; 5000                  ; 5000                  ;
+; Iteration limit for non-constant Verilog loops                   ; 250                   ; 250                   ;
+; Add Pass-Through Logic to Inferred RAMs                          ; On                    ; On                    ;
+; Infer RAMs from Raw Logic                                        ; On                    ; On                    ;
+; Parallel Synthesis                                               ; On                    ; On                    ;
+; DSP Block Balancing                                              ; Auto                  ; Auto                  ;
+; NOT Gate Push-Back                                               ; On                    ; On                    ;
+; Power-Up Don't Care                                              ; On                    ; On                    ;
+; Remove Redundant Logic Cells                                     ; Off                   ; Off                   ;
+; Remove Duplicate Registers                                       ; On                    ; On                    ;
+; Ignore CARRY Buffers                                             ; Off                   ; Off                   ;
+; Ignore CASCADE Buffers                                           ; Off                   ; Off                   ;
+; Ignore GLOBAL Buffers                                            ; Off                   ; Off                   ;
+; Ignore ROW GLOBAL Buffers                                        ; Off                   ; Off                   ;
+; Ignore LCELL Buffers                                             ; Off                   ; Off                   ;
+; Ignore SOFT Buffers                                              ; On                    ; On                    ;
+; Limit AHDL Integers to 32 Bits                                   ; Off                   ; Off                   ;
+; Optimization Technique                                           ; Balanced              ; Balanced              ;
+; Carry Chain Length                                               ; 70                    ; 70                    ;
+; Auto Carry Chains                                                ; On                    ; On                    ;
+; Auto Open-Drain Pins                                             ; On                    ; On                    ;
+; Perform WYSIWYG Primitive Resynthesis                            ; Off                   ; Off                   ;
+; Auto ROM Replacement                                             ; On                    ; On                    ;
+; Auto RAM Replacement                                             ; On                    ; On                    ;
+; Auto DSP Block Replacement                                       ; On                    ; On                    ;
+; Auto Shift Register Replacement                                  ; Auto                  ; Auto                  ;
+; Allow Shift Register Merging across Hierarchies                  ; Auto                  ; Auto                  ;
+; Auto Clock Enable Replacement                                    ; On                    ; On                    ;
+; Strict RAM Replacement                                           ; Off                   ; Off                   ;
+; Allow Synchronous Control Signals                                ; On                    ; On                    ;
+; Force Use of Synchronous Clear Signals                           ; Off                   ; Off                   ;
+; Auto RAM Block Balancing                                         ; On                    ; On                    ;
+; Auto RAM to Logic Cell Conversion                                ; Off                   ; Off                   ;
+; Auto Resource Sharing                                            ; Off                   ; Off                   ;
+; Allow Any RAM Size For Recognition                               ; Off                   ; Off                   ;
+; Allow Any ROM Size For Recognition                               ; Off                   ; Off                   ;
+; Allow Any Shift Register Size For Recognition                    ; Off                   ; Off                   ;
+; Use LogicLock Constraints during Resource Balancing              ; On                    ; On                    ;
+; Ignore translate_off and synthesis_off directives                ; Off                   ; Off                   ;
+; Timing-Driven Synthesis                                          ; On                    ; On                    ;
+; Report Parameter Settings                                        ; On                    ; On                    ;
+; Report Source Assignments                                        ; On                    ; On                    ;
+; Report Connectivity Checks                                       ; On                    ; On                    ;
+; Ignore Maximum Fan-Out Assignments                               ; Off                   ; Off                   ;
+; Synchronization Register Chain Length                            ; 2                     ; 2                     ;
+; Power Optimization During Synthesis                              ; Normal compilation    ; Normal compilation    ;
+; HDL message level                                                ; Level2                ; Level2                ;
+; Suppress Register Optimization Related Messages                  ; Off                   ; Off                   ;
+; Number of Removed Registers Reported in Synthesis Report         ; 5000                  ; 5000                  ;
+; Number of Swept Nodes Reported in Synthesis Report               ; 5000                  ; 5000                  ;
+; Number of Inverted Registers Reported in Synthesis Report        ; 100                   ; 100                   ;
+; Clock MUX Protection                                             ; On                    ; On                    ;
+; Auto Gated Clock Conversion                                      ; Off                   ; Off                   ;
+; Block Design Naming                                              ; Auto                  ; Auto                  ;
+; SDC constraint protection                                        ; Off                   ; Off                   ;
+; Synthesis Effort                                                 ; Auto                  ; Auto                  ;
+; Shift Register Replacement - Allow Asynchronous Clear Signal     ; On                    ; On                    ;
+; Pre-Mapping Resynthesis Optimization                             ; Off                   ; Off                   ;
+; Analysis & Synthesis Message Level                               ; Medium                ; Medium                ;
+; Disable Register Merging Across Hierarchies                      ; Auto                  ; Auto                  ;
+; Resource Aware Inference For Block RAM                           ; On                    ; On                    ;
++------------------------------------------------------------------+-----------------------+-----------------------+
+
+
++------------------------------------------+
+; Parallel Compilation                     ;
++----------------------------+-------------+
+; Processors                 ; Number      ;
++----------------------------+-------------+
+; Number detected on machine ; 4           ;
+; Maximum allowed            ; 4           ;
+;                            ;             ;
+; Average used               ; 1.00        ;
+; Maximum used               ; 4           ;
+;                            ;             ;
+; Usage by Processor         ; % Time Used ;
+;     Processor 1            ; 100.0%      ;
+;     Processor 2            ;   0.0%      ;
+;     Processors 3-4         ;   0.0%      ;
++----------------------------+-------------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Source Files Read                                                                                                                               ;
++----------------------------------+-----------------+------------------------+------------------------------------------------------------------------------+---------+
+; File Name with User-Entered Path ; Used in Netlist ; File Type              ; File Name with Absolute Path                                                 ; Library ;
++----------------------------------+-----------------+------------------------+------------------------------------------------------------------------------+---------+
+; Temporizador.v                   ; yes             ; User Verilog HDL File  ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/Temporizador.v                ;         ;
+; bssd.v                           ; yes             ; User Verilog HDL File  ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/bssd.v                        ;         ;
+; sensor_luz.v                     ; yes             ; User Verilog HDL File  ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/sensor_luz.v                  ;         ;
+; UltrasonicSensor.v               ; yes             ; User Verilog HDL File  ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/UltrasonicSensor.v            ;         ;
+; visualizacion_personalizada.v    ; yes             ; User Verilog HDL File  ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v ;         ;
+; control_fsm.v                    ; yes             ; User Verilog HDL File  ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v                 ;         ;
+; TamaguchiUpdateNewPro.v          ; yes             ; User Verilog HDL File  ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v       ;         ;
+; iniciando.txt                    ; yes             ; Auto-Found File        ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/iniciando.txt                 ;         ;
+; manzana.txt                      ; yes             ; Auto-Found File        ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/manzana.txt                   ;         ;
+; cara sueno abre.txt              ; yes             ; Auto-Found File        ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/cara sueno abre.txt           ;         ;
+; cruz.txt                         ; yes             ; Auto-Found File        ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/cruz.txt                      ;         ;
+; cara sonriendo.txt               ; yes             ; Auto-Found File        ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/cara sonriendo.txt            ;         ;
+; cara sueno cierra.txt            ; yes             ; Auto-Found File        ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/cara sueno cierra.txt         ;         ;
+; rip.txt                          ; yes             ; Auto-Found File        ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/rip.txt                       ;         ;
+; balonfutbol.txt                  ; yes             ; Auto-Found File        ; C:/Users/diego/Documents/TamaguchiUpdateNewPro/balonfutbol.txt               ;         ;
++----------------------------------+-----------------+------------------------+------------------------------------------------------------------------------+---------+
+
+
++---------------------------------------------------------+
+; Analysis & Synthesis Resource Usage Summary             ;
++---------------------------------------------+-----------+
+; Resource                                    ; Usage     ;
++---------------------------------------------+-----------+
+; Estimated Total logic elements              ; 778       ;
+;                                             ;           ;
+; Total combinational functions               ; 746       ;
+; Logic element usage by number of LUT inputs ;           ;
+;     -- 4 input functions                    ; 407       ;
+;     -- 3 input functions                    ; 105       ;
+;     -- <=2 input functions                  ; 234       ;
+;                                             ;           ;
+; Logic elements by mode                      ;           ;
+;     -- normal mode                          ; 596       ;
+;     -- arithmetic mode                      ; 150       ;
+;                                             ;           ;
+; Total registers                             ; 245       ;
+;     -- Dedicated logic registers            ; 245       ;
+;     -- I/O registers                        ; 0         ;
+;                                             ;           ;
+; I/O pins                                    ; 30        ;
+;                                             ;           ;
+; Embedded Multiplier 9-bit elements          ; 0         ;
+;                                             ;           ;
+; Maximum fan-out node                        ; clk~input ;
+; Maximum fan-out                             ; 184       ;
+; Total fan-out                               ; 3273      ;
+; Average fan-out                             ; 3.11      ;
++---------------------------------------------+-----------+
+
+
++------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Analysis & Synthesis Resource Utilization by Entity                                                                                                                                                                                                                                                                                ;
++--------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+---------------------------------------------------------------------------------------------------------------+-----------------------------+--------------+
+; Compilation Hierarchy Node                 ; Combinational ALUTs ; Dedicated Logic Registers ; Memory Bits ; DSP Elements ; DSP 9x9 ; DSP 18x18 ; Pins ; Virtual Pins ; Full Hierarchy Name                                                                                           ; Entity Name                 ; Library Name ;
++--------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+---------------------------------------------------------------------------------------------------------------+-----------------------------+--------------+
+; |TamaguchiUpdateNewPro                     ; 746 (0)             ; 245 (0)                   ; 0           ; 0            ; 0       ; 0         ; 30   ; 0            ; |TamaguchiUpdateNewPro                                                                                        ; TamaguchiUpdateNewPro       ; work         ;
+;    |UltrasonicSensor:dhaissdnas|           ; 80 (80)             ; 84 (84)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |TamaguchiUpdateNewPro|UltrasonicSensor:dhaissdnas                                                            ; UltrasonicSensor            ; work         ;
+;    |control_fsm:modulo_principal|          ; 221 (140)           ; 97 (51)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |TamaguchiUpdateNewPro|control_fsm:modulo_principal                                                           ; control_fsm                 ; work         ;
+;       |Temporizador7seg:temporizador_inst| ; 81 (74)             ; 46 (46)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |TamaguchiUpdateNewPro|control_fsm:modulo_principal|Temporizador7seg:temporizador_inst                        ; Temporizador7seg            ; work         ;
+;          |BCDtoSSeg:visualizador|          ; 7 (7)               ; 0 (0)                     ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |TamaguchiUpdateNewPro|control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|BCDtoSSeg:visualizador ; BCDtoSSeg                   ; work         ;
+;    |visualizacion_personalizada:diahdias|  ; 445 (445)           ; 64 (64)                   ; 0           ; 0            ; 0       ; 0         ; 0    ; 0            ; |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias                                                   ; visualizacion_personalizada ; work         ;
++--------------------------------------------+---------------------+---------------------------+-------------+--------------+---------+-----------+------+--------------+---------------------------------------------------------------------------------------------------------------+-----------------------------+--------------+
+Note: For table entries with two numbers listed, the numbers in parentheses indicate the number of resources of the given type used by the specific entity alone. The numbers listed outside of parentheses indicate the total resources of the given type used by the specific entity and all of its sub-entities in the hierarchy.
+
+
+Encoding Type:  One-Hot
++-------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|create_char_task                                                                ;
++---------------------------------+----------------------------+-----------------------------+------------------------------+---------------------------------+
+; Name                            ; create_char_task.WRITE_LCD ; create_char_task.SET_CURSOR ; create_char_task.WRITE_CHARS ; create_char_task.SET_CGRAM_ADDR ;
++---------------------------------+----------------------------+-----------------------------+------------------------------+---------------------------------+
+; create_char_task.SET_CGRAM_ADDR ; 0                          ; 0                           ; 0                            ; 0                               ;
+; create_char_task.WRITE_CHARS    ; 0                          ; 0                           ; 1                            ; 1                               ;
+; create_char_task.SET_CURSOR     ; 0                          ; 1                           ; 0                            ; 1                               ;
+; create_char_task.WRITE_LCD      ; 1                          ; 0                           ; 0                            ; 1                               ;
++---------------------------------+----------------------------+-----------------------------+------------------------------+---------------------------------+
+
+
+Encoding Type:  One-Hot
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; State Machine - |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|fsm_state                                                                                                     ;
++--------------------------------+--------------------------------+---------------------------+------------------------+---------------------------+-----------------------+----------------+
+; Name                           ; fsm_state.SET_CURSOR_AND_WRITE ; fsm_state.CLEAR_COUNTERS1 ; fsm_state.CREATE_CHARS ; fsm_state.CLEAR_COUNTERS0 ; fsm_state.INIT_CONFIG ; fsm_state.IDLE ;
++--------------------------------+--------------------------------+---------------------------+------------------------+---------------------------+-----------------------+----------------+
+; fsm_state.IDLE                 ; 0                              ; 0                         ; 0                      ; 0                         ; 0                     ; 0              ;
+; fsm_state.INIT_CONFIG          ; 0                              ; 0                         ; 0                      ; 0                         ; 1                     ; 1              ;
+; fsm_state.CLEAR_COUNTERS0      ; 0                              ; 0                         ; 0                      ; 1                         ; 0                     ; 1              ;
+; fsm_state.CREATE_CHARS         ; 0                              ; 0                         ; 1                      ; 0                         ; 0                     ; 1              ;
+; fsm_state.CLEAR_COUNTERS1      ; 0                              ; 1                         ; 0                      ; 0                         ; 0                     ; 1              ;
+; fsm_state.SET_CURSOR_AND_WRITE ; 1                              ; 0                         ; 0                      ; 0                         ; 0                     ; 1              ;
++--------------------------------+--------------------------------+---------------------------+------------------------+---------------------------+-----------------------+----------------+
+
+
++-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Registers Removed During Synthesis                                                                                                                                                        ;
++---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
+; Register name                                                                               ; Reason for Removal                                                                          ;
++---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[0,2,5,10]       ; Stuck at GND due to stuck port data_in                                                      ;
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[11,12,14]       ; Stuck at VCC due to stuck port data_in                                                      ;
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[15]             ; Stuck at GND due to stuck port data_in                                                      ;
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[18]             ; Stuck at VCC due to stuck port data_in                                                      ;
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[23,25..31]      ; Stuck at GND due to stuck port data_in                                                      ;
+; control_fsm:modulo_principal|saciedad[1]                                                    ; Merged with control_fsm:modulo_principal|saciedad[0]                                        ;
+; control_fsm:modulo_principal|descanso[1]                                                    ; Merged with control_fsm:modulo_principal|descanso[0]                                        ;
+; control_fsm:modulo_principal|felicidad[1]                                                   ; Merged with control_fsm:modulo_principal|felicidad[0]                                       ;
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[6,16,19..22,24] ; Merged with control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[13] ;
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[1,3,4,7..9]     ; Merged with control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|count_limit[17] ;
+; control_fsm:modulo_principal|diversion[1]                                                   ; Merged with control_fsm:modulo_principal|diversion[0]                                       ;
+; control_fsm:modulo_principal|salud[1]                                                       ; Merged with control_fsm:modulo_principal|salud[0]                                           ;
+; UltrasonicSensor:dhaissdnas|pulse_width[0..2]                                               ; Lost fanout                                                                                 ;
+; visualizacion_personalizada:diahdias|create_char_task~6                                     ; Lost fanout                                                                                 ;
+; visualizacion_personalizada:diahdias|create_char_task~7                                     ; Lost fanout                                                                                 ;
+; visualizacion_personalizada:diahdias|fsm_state~2                                            ; Lost fanout                                                                                 ;
+; visualizacion_personalizada:diahdias|fsm_state~3                                            ; Lost fanout                                                                                 ;
+; visualizacion_personalizada:diahdias|fsm_state~4                                            ; Lost fanout                                                                                 ;
+; visualizacion_personalizada:diahdias|fsm_state~5                                            ; Lost fanout                                                                                 ;
+; visualizacion_personalizada:diahdias|char_counter[3]                                        ; Stuck at GND due to stuck port data_in                                                      ;
+; Total Number of Removed Registers = 45                                                      ;                                                                                             ;
++---------------------------------------------------------------------------------------------+---------------------------------------------------------------------------------------------+
+
+
++------------------------------------------------------+
+; General Register Statistics                          ;
++----------------------------------------------+-------+
+; Statistic                                    ; Value ;
++----------------------------------------------+-------+
+; Total registers                              ; 245   ;
+; Number of registers using Synchronous Clear  ; 122   ;
+; Number of registers using Synchronous Load   ; 2     ;
+; Number of registers using Asynchronous Clear ; 61    ;
+; Number of registers using Asynchronous Load  ; 0     ;
+; Number of registers using Clock Enable       ; 146   ;
+; Number of registers using Preset             ; 0     ;
++----------------------------------------------+-------+
+
+
++----------------------------------------------------------------------------------+
+; Inverted Register Statistics                                                     ;
++------------------------------------------------------------------------+---------+
+; Inverted Register                                                      ; Fan out ;
++------------------------------------------------------------------------+---------+
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|BCD[0] ; 11      ;
+; control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|BCD[3] ; 9       ;
+; control_fsm:modulo_principal|descanso[2]                               ; 11      ;
+; control_fsm:modulo_principal|descanso[0]                               ; 8       ;
+; control_fsm:modulo_principal|descanso[3]                               ; 10      ;
+; control_fsm:modulo_principal|felicidad[2]                              ; 11      ;
+; control_fsm:modulo_principal|felicidad[0]                              ; 5       ;
+; control_fsm:modulo_principal|felicidad[3]                              ; 9       ;
+; control_fsm:modulo_principal|salud[2]                                  ; 6       ;
+; control_fsm:modulo_principal|salud[0]                                  ; 4       ;
+; control_fsm:modulo_principal|salud[3]                                  ; 7       ;
+; control_fsm:modulo_principal|diversion[2]                              ; 10      ;
+; control_fsm:modulo_principal|diversion[0]                              ; 5       ;
+; control_fsm:modulo_principal|diversion[3]                              ; 9       ;
+; control_fsm:modulo_principal|saciedad[0]                               ; 5       ;
+; control_fsm:modulo_principal|saciedad[3]                               ; 8       ;
+; control_fsm:modulo_principal|saciedad[2]                               ; 8       ;
+; Total number of inverted registers = 17                                ;         ;
++------------------------------------------------------------------------+---------+
+
+
++----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------+
+; Multiplexer Restructuring Statistics (Restructuring Performed)                                                                                                                                                       ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------+
+; Multiplexer Inputs ; Bus Width ; Baseline Area ; Area if Restructured ; Saving if Restructured ; Registered ; Example Multiplexer Output                                                                             ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------+
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |TamaguchiUpdateNewPro|control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|counter_seg[31] ;
+; 3:1                ; 3 bits    ; 6 LEs         ; 3 LEs                ; 3 LEs                  ; Yes        ; |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|command_counter[0]                         ;
+; 3:1                ; 32 bits   ; 64 LEs        ; 32 LEs               ; 32 LEs                 ; Yes        ; |TamaguchiUpdateNewPro|UltrasonicSensor:dhaissdnas|counter[3]                                          ;
+; 7:1                ; 32 bits   ; 128 LEs       ; 32 LEs               ; 96 LEs                 ; Yes        ; |TamaguchiUpdateNewPro|control_fsm:modulo_principal|timer[5]                                           ;
+; 8:1                ; 15 bits   ; 75 LEs        ; 30 LEs               ; 45 LEs                 ; Yes        ; |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|cgram_addrs_counter[12]                    ;
+; 3:1                ; 4 bits    ; 8 LEs         ; 8 LEs                ; 0 LEs                  ; No         ; |TamaguchiUpdateNewPro|visualizacion_personalizada:diahdias|char_counter                               ;
++--------------------+-----------+---------------+----------------------+------------------------+------------+--------------------------------------------------------------------------------------------------------+
+
+
++--------------------------------------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: control_fsm:modulo_principal|Temporizador7seg:temporizador_inst ;
++--------------------+----------+------------------------------------------------------------------------------+
+; Parameter Name     ; Value    ; Type                                                                         ;
++--------------------+----------+------------------------------------------------------------------------------+
+; count_limit_normal ; 25000000 ; Signed Integer                                                               ;
+; count_limit_fast   ; 416666   ; Signed Integer                                                               ;
++--------------------+----------+------------------------------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++--------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: UltrasonicSensor:dhaissdnas ;
++-----------------+----------+---------------------------------------------+
+; Parameter Name  ; Value    ; Type                                        ;
++-----------------+----------+---------------------------------------------+
+; clk_freq        ; 50000000 ; Signed Integer                              ;
+; pulse_duration  ; 500      ; Signed Integer                              ;
+; max_distance_cm ; 20       ; Signed Integer                              ;
+; time_threshold  ; 58823    ; Signed Integer                              ;
++-----------------+----------+---------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------------------------------------+
+; Parameter Settings for User Entity Instance: visualizacion_personalizada:diahdias ;
++-----------------+-------+---------------------------------------------------------+
+; Parameter Name  ; Value ; Type                                                    ;
++-----------------+-------+---------------------------------------------------------+
+; num_commands    ; 3     ; Signed Integer                                          ;
+; num_data_all    ; 64    ; Signed Integer                                          ;
+; char_data       ; 8     ; Signed Integer                                          ;
+; num_cgram_addrs ; 8     ; Signed Integer                                          ;
+; COUNT_MAX       ; 8000  ; Signed Integer                                          ;
++-----------------+-------+---------------------------------------------------------+
+Note: In order to hide this table in the UI and the text report file, please set the "Show Parameter Settings in Synthesis Report" option in "Analysis and Synthesis Settings -> More Settings" to "Off".
+
+
++-----------------------------------------------------+
+; Post-Synthesis Netlist Statistics for Top Partition ;
++-----------------------+-----------------------------+
+; Type                  ; Count                       ;
++-----------------------+-----------------------------+
+; boundary_port         ; 30                          ;
+; cycloneiii_ff         ; 245                         ;
+;     CLR               ; 19                          ;
+;     CLR SLD           ; 1                           ;
+;     ENA               ; 70                          ;
+;     ENA CLR           ; 9                           ;
+;     ENA CLR SCLR      ; 32                          ;
+;     ENA SCLR          ; 34                          ;
+;     ENA SLD           ; 1                           ;
+;     SCLR              ; 56                          ;
+;     plain             ; 23                          ;
+; cycloneiii_lcell_comb ; 749                         ;
+;     arith             ; 150                         ;
+;         2 data inputs ; 148                         ;
+;         3 data inputs ; 2                           ;
+;     normal            ; 599                         ;
+;         0 data inputs ; 2                           ;
+;         1 data inputs ; 10                          ;
+;         2 data inputs ; 77                          ;
+;         3 data inputs ; 103                         ;
+;         4 data inputs ; 407                         ;
+;                       ;                             ;
+; Max LUT depth         ; 10.00                       ;
+; Average LUT depth     ; 5.32                        ;
++-----------------------+-----------------------------+
+
+
++-------------------------------+
+; Elapsed Time Per Partition    ;
++----------------+--------------+
+; Partition Name ; Elapsed Time ;
++----------------+--------------+
+; Top            ; 00:00:03     ;
++----------------+--------------+
+
+
++-------------------------------+
+; Analysis & Synthesis Messages ;
++-------------------------------+
+Info: *******************************************************************
+Info: Running Quartus Prime Analysis & Synthesis
+    Info: Version 23.1std.1 Build 993 05/14/2024 SC Lite Edition
+    Info: Processing started: Fri Sep 20 17:17:34 2024
+Info: Command: quartus_map --read_settings_files=on --write_settings_files=off TamaguchiUpdateNewPro -c TamaguchiUpdateNewPro
+Warning (18236): Number of processors has not been specified which may cause overloading on shared machines.  Set the global assignment NUM_PARALLEL_PROCESSORS in your QSF to an appropriate value for best performance.
+Info (20030): Parallel compilation is enabled and will use 4 of the 4 processors detected
+Info (12021): Found 1 design units, including 1 entities, in source file temporizador.v
+    Info (12023): Found entity 1: Temporizador7seg File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/Temporizador.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file bssd.v
+    Info (12023): Found entity 1: BCDtoSSeg File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/bssd.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file sensor_luz.v
+    Info (12023): Found entity 1: sensor_luz File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/sensor_luz.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file ultrasonicsensor.v
+    Info (12023): Found entity 1: UltrasonicSensor File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/UltrasonicSensor.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file visualizacion_personalizada.v
+    Info (12023): Found entity 1: visualizacion_personalizada File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file control_fsm.v
+    Info (12023): Found entity 1: control_fsm File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 1
+Info (12021): Found 1 design units, including 1 entities, in source file tamaguchiupdatenewpro.v
+    Info (12023): Found entity 1: TamaguchiUpdateNewPro File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 1
+Warning (10236): Verilog HDL Implicit Net warning at TamaguchiUpdateNewPro.v(23): created implicit net for "rst" File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 23
+Info (12127): Elaborating entity "TamaguchiUpdateNewPro" for the top level hierarchy
+Info (12128): Elaborating entity "sensor_luz" for hierarchy "sensor_luz:fnsba" File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 38
+Info (12128): Elaborating entity "control_fsm" for hierarchy "control_fsm:modulo_principal" File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 57
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(91): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 91
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(92): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 92
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(93): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 93
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(94): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 94
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(95): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 95
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(147): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 147
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(148): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 148
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(149): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 149
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(167): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 167
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(185): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 185
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(202): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 202
+Warning (10230): Verilog HDL assignment warning at control_fsm.v(220): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 220
+Info (12128): Elaborating entity "Temporizador7seg" for hierarchy "control_fsm:modulo_principal|Temporizador7seg:temporizador_inst" File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/control_fsm.v Line: 41
+Warning (10230): Verilog HDL assignment warning at Temporizador.v(61): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/Temporizador.v Line: 61
+Warning (10230): Verilog HDL assignment warning at Temporizador.v(65): truncated value with size 32 to match size of target (6) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/Temporizador.v Line: 65
+Info (12128): Elaborating entity "BCDtoSSeg" for hierarchy "control_fsm:modulo_principal|Temporizador7seg:temporizador_inst|BCDtoSSeg:visualizador" File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/Temporizador.v Line: 82
+Info (12128): Elaborating entity "UltrasonicSensor" for hierarchy "UltrasonicSensor:dhaissdnas" File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 65
+Warning (10036): Verilog HDL or VHDL warning at UltrasonicSensor.v(10): object "echo_end" assigned a value but never read File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/UltrasonicSensor.v Line: 10
+Warning (10230): Verilog HDL assignment warning at UltrasonicSensor.v(23): truncated value with size 32 to match size of target (20) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/UltrasonicSensor.v Line: 23
+Info (12128): Elaborating entity "visualizacion_personalizada" for hierarchy "visualizacion_personalizada:diahdias" File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 83
+Warning (10230): Verilog HDL assignment warning at visualizacion_personalizada.v(132): truncated value with size 32 to match size of target (13) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 132
+Warning (10850): Verilog HDL warning at visualizacion_personalizada.v(202): number of words (72) in memory file does not match the number of elements in the address range [0:63] File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 202
+Warning (10230): Verilog HDL assignment warning at visualizacion_personalizada.v(218): truncated value with size 32 to match size of target (3) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 218
+Warning (10230): Verilog HDL assignment warning at visualizacion_personalizada.v(243): truncated value with size 32 to match size of target (7) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 243
+Warning (10230): Verilog HDL assignment warning at visualizacion_personalizada.v(249): truncated value with size 32 to match size of target (16) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 249
+Warning (10230): Verilog HDL assignment warning at visualizacion_personalizada.v(253): truncated value with size 32 to match size of target (4) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 253
+Info (10264): Verilog HDL Case Statement information at visualizacion_personalizada.v(234): all case item expressions in this case statement are onehot File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 234
+Warning (10230): Verilog HDL assignment warning at visualizacion_personalizada.v(269): truncated value with size 16 to match size of target (8) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 269
+Warning (10230): Verilog HDL assignment warning at visualizacion_personalizada.v(339): truncated value with size 32 to match size of target (16) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 339
+Info (10264): Verilog HDL Case Statement information at visualizacion_personalizada.v(266): all case item expressions in this case statement are onehot File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 266
+Warning (10230): Verilog HDL assignment warning at visualizacion_personalizada.v(350): truncated value with size 32 to match size of target (1) File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 350
+Warning (10030): Net "config_memory.data_a" at visualizacion_personalizada.v(83) has no driver or initial value, using a default initial value '0' File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 83
+Warning (10030): Net "config_memory.waddr_a" at visualizacion_personalizada.v(83) has no driver or initial value, using a default initial value '0' File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 83
+Warning (10030): Net "cgram_addrs.data_a" at visualizacion_personalizada.v(84) has no driver or initial value, using a default initial value '0' File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 84
+Warning (10030): Net "cgram_addrs.waddr_a" at visualizacion_personalizada.v(84) has no driver or initial value, using a default initial value '0' File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 84
+Warning (10030): Net "config_memory.we_a" at visualizacion_personalizada.v(83) has no driver or initial value, using a default initial value '0' File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 83
+Warning (10030): Net "cgram_addrs.we_a" at visualizacion_personalizada.v(84) has no driver or initial value, using a default initial value '0' File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 84
+Info (276014): Found 2 instances of uninferred RAM logic
+    Info (276004): RAM logic "visualizacion_personalizada:diahdias|cgram_addrs" is uninferred due to inappropriate RAM size File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 84
+    Info (276004): RAM logic "visualizacion_personalizada:diahdias|config_memory" is uninferred due to inappropriate RAM size File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/visualizacion_personalizada.v Line: 83
+Critical Warning (127005): Memory depth (4) in the design file differs from memory depth (3) in the Memory Initialization File "C:/Users/diego/Documents/TamaguchiUpdateNewPro/db/TamaguchiUpdateNewPro.ram0_visualizacion_personalizada_5cff4f0b.hdl.mif" -- setting initial value for remaining addresses to 0
+Info (13000): Registers with preset signals will power-up high File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/Temporizador.v Line: 55
+Info (13003): DEV_CLRn pin will set, and not reset, register with preset signal due to NOT Gate Push-Back
+Warning (13024): Output pins are stuck at VCC or GND
+    Warning (13410): Pin "anodos[0]" is stuck at GND File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 14
+    Warning (13410): Pin "anodos[1]" is stuck at VCC File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 14
+    Warning (13410): Pin "rw" is stuck at GND File: C:/Users/diego/Documents/TamaguchiUpdateNewPro/TamaguchiUpdateNewPro.v Line: 17
+Info (286030): Timing-Driven Synthesis is running
+Info (17049): 9 registers lost all their fanouts during netlist optimizations.
+Info (144001): Generated suppressed messages file C:/Users/diego/Documents/TamaguchiUpdateNewPro/output_files/TamaguchiUpdateNewPro.map.smsg
+Info (16010): Generating hard_block partition "hard_block:auto_generated_inst"
+    Info (16011): Adding 0 node(s), including 0 DDIO, 0 PLL, 0 transceiver and 0 LCELL
+Info (21057): Implemented 808 device resources after synthesis - the final resource count might be different
+    Info (21058): Implemented 8 input pins
+    Info (21059): Implemented 22 output pins
+    Info (21061): Implemented 778 logic cells
+Info: Quartus Prime Analysis & Synthesis was successful. 0 errors, 38 warnings
+    Info: Peak virtual memory: 4765 megabytes
+    Info: Processing ended: Fri Sep 20 17:18:00 2024
+    Info: Elapsed time: 00:00:26
+    Info: Total CPU time (on all processors): 00:00:40
+
+
++------------------------------------------+
+; Analysis & Synthesis Suppressed Messages ;
++------------------------------------------+
+The suppressed messages can be found in C:/Users/diego/Documents/TamaguchiUpdateNewPro/output_files/TamaguchiUpdateNewPro.map.smsg.
+
+
