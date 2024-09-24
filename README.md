@@ -228,6 +228,41 @@ Este módulo tiene un solo bloque combinacional. El flujo de datos sigue un simp
 
 ## 3.3 Módulo del BCD2SSEG
 ### 3.3.1 Entradas y salidas
+```verilog
+module BCDtoSSeg (BCD, SSeg, an);
+
+  input [3:0] BCD;
+  output reg [6:0] SSeg;
+  output [1:0] an;
+
+assign an=2'b10;
+
+
+always @ ( * ) begin
+  case (BCD)
+   4'b0000: SSeg = 7'b0000001; // "0"  
+	4'b0001: SSeg = 7'b1001111; // "1" 
+	4'b0010: SSeg = 7'b0010010; // "2" 
+	4'b0011: SSeg = 7'b0000110; // "3" 
+	4'b0100: SSeg = 7'b1001100; // "4" 
+	4'b0101: SSeg = 7'b0100100; // "5" 
+	4'b0110: SSeg = 7'b0100000; // "6" 
+	4'b0111: SSeg = 7'b0001111; // "7" 
+	4'b1000: SSeg = 7'b0000000; // "8"  
+	4'b1001: SSeg = 7'b0000100; // "9" 
+   4'ha: SSeg = 7'b0001000;  
+   4'hb: SSeg = 7'b1100000;
+   4'hc: SSeg = 7'b0110001;
+   4'hd: SSeg = 7'b1000010;
+   4'he: SSeg = 7'b0110000;
+   4'hf: SSeg = 7'b0111000;
+    default:
+    SSeg = 0;
+  endcase
+end
+
+endmodule
+```
 **Entrada:**
 
 BCD es un valor de 4 bits que representa un número en formato BCD (0-9 o A-F en hexadecimal).
@@ -282,6 +317,92 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 - El bloque case selecciona la salida correspondiente SSeg = 7'b0000110 (que enciende los LEDs necesarios para mostrar un "3" en el display).
 - La salida an se fija en 2'b10, activando el segundo dígito del display.
 ## 3.4 Módulo Temporizador de 7 segmentos
+```verilog
+module Temporizador7seg (
+    input clk,
+    input reset,
+    input fast_button, // Botón para acelerar el temporizador
+    output [1:0] an,
+    output [6:0] sseg,
+    output reg bandera
+);
+
+    reg [3:0] BCD;
+
+    // Parámetro ajustable según el botón
+    parameter count_limit_normal = 25000000; // Frecuencia para 1 Hz
+    parameter count_limit_fast = 416666;    // Frecuencia más rápida (por ejemplo, 5 Hz)
+    reg [31:0] count_limit;  // Contador dinámico para cambiar la velocidad
+    reg [31:0] counter_seg;
+    reg freq;
+    reg [5:0] segundero;
+
+    initial begin
+        counter_seg = 'd0;
+        freq = 'd0;
+        segundero = 'd0;
+        BCD = 'd9;
+        bandera = 0;
+    end
+
+    // Temporizador que cambia su velocidad según el botón presionado
+    always @(posedge clk) begin
+        if (reset) begin
+            counter_seg  <= 0;
+            freq <= 'b0;
+        end 
+		  else begin
+				if (counter_seg > count_limit) begin
+					freq <= ~freq;
+					counter_seg <= 'd0;
+				end
+				else begin
+					counter_seg <= counter_seg + 1;
+					count_limit <= (fast_button)?count_limit_fast:count_limit_normal;
+				end
+		  end
+    end
+
+
+    // Lógica para el segundero
+    always @(posedge freq, posedge reset) begin
+        if (reset) begin
+            segundero <= 'd0;
+            BCD <= 4'b1001;
+            bandera <= 0;  // Reiniciamos la bandera
+        end 
+		  else begin
+			if (segundero == 60) begin
+					segundero <= 0;
+					if(BCD == 0)begin
+						BCD <= 9;
+					end
+					else begin
+						BCD <= BCD - 1;
+						
+					end
+         end else begin
+            segundero <= segundero + 1;
+				if(segundero == 59 & BCD == 0)begin
+					bandera <= 1;
+				end
+				else begin
+					bandera <= 0;
+				end
+         end
+		end  
+		 
+
+
+        // Activamos la bandera cuando BCD llega a 0
+
+    end
+
+    // Instancia del módulo de conversión BCD a 7 segmentos
+    BCDtoSSeg visualizador (.BCD(BCD), .SSeg(sseg), .an(an));
+
+endmodule
+```
 ### 3.4.1. Componentes del Módulo
 - Este módulo es un temporizador de 7 segmentos que ajusta su velocidad en función de un botón (fast_button) y tiene varias funciones:
 - Control del temporizador con un botón para cambiar la frecuencia.
@@ -365,6 +486,361 @@ Este es un módulo combinacional, ya que la salida SSeg se actualiza directament
 - BCD que cuenta de 9 a 0.
 - **Salidas:** sseg y an para mostrar los números en el display, y bandera que indica el fin del temporizador.
 ## 3.5 Módulo visualización personalizada
+```verilog
+module visualizacion_personalizada#(parameter num_commands = 3, // Npumero de comandos de configuración a enviar a la LCD
+                                      num_data_all = 64,  // cantidad líneas dentro de cada cuadro en la lcd
+                                      char_data = 8, // Número de bytes que componen cada carácter personalizado (usualmente 8).
+                                      num_cgram_addrs = 8,
+                                      COUNT_MAX = 8000)(
+    input clk,            
+    input rst,          
+    
+	input [2:0]estado,
+	input [3:0]saciedad,
+	input [3:0]diversion,
+    input [3:0]descanso,
+    input [3:0]salud ,
+    input [3:0]felicidad,
+	 
+	 input luz,
+	 input cercania,
+	 input fast,
+	 
+    output reg rs,        
+    output reg rw,
+    output enable,    
+    output reg [7:0] data
+);
+
+
+
+
+// Definir los estados del controlador
+localparam IDLE = 0;
+localparam INIT_CONFIG = 1;
+localparam CLEAR_COUNTERS0 = 2;
+localparam CREATE_CHARS = 3;
+localparam CLEAR_COUNTERS1 = 4;
+localparam SET_CURSOR_AND_WRITE = 5;
+
+localparam SET_CGRAM_ADDR = 0;
+localparam WRITE_CHARS = 1;
+localparam SET_CURSOR = 2;
+localparam WRITE_LCD = 3;
+localparam CHANGE_LINE = 4;
+
+// Direcciones de escritura de la CGRAM 
+localparam CGRAM_ADDR0 = 8'h40;
+localparam CGRAM_ADDR1 = 8'h48;
+localparam CGRAM_ADDR2 = 8'h50;
+localparam CGRAM_ADDR3 = 8'h58;
+localparam CGRAM_ADDR4 = 8'h60;
+localparam CGRAM_ADDR5 = 8'h68;
+localparam CGRAM_ADDR6 = 8'h70;
+localparam CGRAM_ADDR7 = 8'h78;
+
+
+reg [3:0] fsm_state;
+reg [3:0] next;
+reg clk_16ms;
+
+// Definir un contador para el divisor de frecuencia
+reg [$clog2(COUNT_MAX)-1:0] counter_div_freq;
+
+// Comandos de configuración
+localparam CLEAR_DISPLAY = 8'h01;
+localparam SHIFT_CURSOR_RIGHT = 8'h06;
+localparam DISPON_CURSOROFF = 8'h0C;
+localparam DISPON_CURSORBLINK = 8'h0E;
+localparam LINES2_MATRIX5x8_MODE8bit = 8'h38;
+localparam LINES2_MATRIX5x8_MODE4bit = 8'h28;
+localparam LINES1_MATRIX5x8_MODE8bit = 8'h30;
+localparam LINES1_MATRIX5x8_MODE4bit = 8'h20;
+localparam START_2LINE = 8'hC0;
+
+// Definir un contador para controlar el envío de comandos
+reg [$clog2(num_commands):0] command_counter;
+// Definir un contador para controlar el envío de cada dato
+reg [$clog2(num_data_all):0] data_counter;
+// Definir un contador para controlar el envío de caracteres a la CGRAM
+reg [$clog2(char_data):0] char_counter;
+// Definir un contador para controlar el envío de comandos
+reg [15:0] cgram_addrs_counter;
+
+// Banco de registros
+reg [7:0] data_memory [0: num_data_all-1];
+reg [7:0] config_memory [0:num_commands-1]; 
+reg [7:0] cgram_addrs [0: num_cgram_addrs-1];
+
+reg [1:0] create_char_task;
+reg init_config_executed;
+wire done_cgram_write;
+reg done_lcd_write;
+reg ready_i;
+
+initial begin
+    fsm_state <= IDLE;
+    data <= 'b0;
+    command_counter <= 'b0;
+    data_counter <= 'b0;
+    rw <= 0;
+	 rs <= 0;
+    clk_16ms <= 'b0;
+    counter_div_freq <= 'b0;
+    init_config_executed <= 'b0;
+    cgram_addrs_counter <= 'b0; 
+    char_counter <= 'b0;
+    done_lcd_write <= 1'b0; 
+
+    create_char_task <= SET_CGRAM_ADDR;
+
+	//$readmemb("C:/Users/diego/Documents/UNAL/Sexto Semestre/tamagotchichimba/CaraTriste.txt", data_memory);
+	config_memory[0] <= LINES2_MATRIX5x8_MODE8bit;
+	config_memory[1] <= DISPON_CURSOROFF;
+	config_memory[2] <= CLEAR_DISPLAY;
+
+    cgram_addrs[0] <= CGRAM_ADDR0;
+    cgram_addrs[1] <= CGRAM_ADDR1;
+    cgram_addrs[2] <= CGRAM_ADDR2;
+    cgram_addrs[3] <= CGRAM_ADDR3;
+    cgram_addrs[4] <= CGRAM_ADDR4;
+    cgram_addrs[5] <= CGRAM_ADDR5;
+    cgram_addrs[6] <= CGRAM_ADDR6;
+    cgram_addrs[7] <= CGRAM_ADDR7;
+
+	 
+	 
+	 ready_i <= 1;
+end
+
+// Divisor de frecuencia
+always @(posedge clk) begin
+    if (counter_div_freq == COUNT_MAX-1) begin
+        clk_16ms <= ~clk_16ms;
+        counter_div_freq <= 0;
+    end else begin
+        counter_div_freq <= counter_div_freq + 1;
+    end
+end
+
+
+always @(posedge clk_16ms)begin
+    if(rst)begin
+        fsm_state <= IDLE;
+    end else begin
+        fsm_state <= next;
+    end
+end
+
+always @(*) begin
+    case(fsm_state)
+        IDLE: begin
+            next <= (ready_i)? ((init_config_executed)? CREATE_CHARS : INIT_CONFIG) : IDLE;
+        end
+        INIT_CONFIG: begin 
+            next <= (command_counter == num_commands)? CLEAR_COUNTERS0 : INIT_CONFIG;
+        end
+        CLEAR_COUNTERS0: begin
+            next <= CREATE_CHARS;
+        end
+        CREATE_CHARS:begin
+            next <= (done_cgram_write)? CLEAR_COUNTERS1 : CREATE_CHARS;
+        end
+        CLEAR_COUNTERS1: begin
+            next <= SET_CURSOR_AND_WRITE;
+        end
+        SET_CURSOR_AND_WRITE: begin 
+            next <= (done_lcd_write)? CLEAR_COUNTERS0 : SET_CURSOR_AND_WRITE;
+        end
+        default: next = IDLE;
+    endcase
+end
+
+always @(posedge clk_16ms) begin
+    if (rst) begin
+        command_counter <= 'b0;
+        data_counter <= 'b0;
+		  data <= 'b0;
+        char_counter <= 'b0;
+        init_config_executed <= 'b0;
+        cgram_addrs_counter <= 'b0;
+        done_lcd_write <= 1'b0; 
+    end else begin 
+	 case (estado)
+        3'b000: begin
+            $readmemb("Iniciando.txt", data_memory);
+        end
+        3'b001: begin
+            $readmemb("Cara sueno abre.txt", data_memory);
+        end
+        3'b010: begin
+            $readmemb("Cara sonriendo.txt", data_memory);
+        end
+		  3'b011: begin
+            $readmemb("Manzana.txt", data_memory);
+        end
+		  3'b100: begin
+            $readmemb("cara sueno cierra.txt", data_memory);
+        end
+		  3'b101: begin
+            $readmemb("Cruz.txt", data_memory);
+        end
+		  3'b110: begin
+            $readmemb("Balonfutbol.txt", data_memory);
+        end
+		   3'b111: begin
+            $readmemb("RIP.txt", data_memory);
+        end	  
+    endcase
+
+        case (next)
+            IDLE: begin
+                char_counter <= 'b0;
+                command_counter <= 'b0;
+                data_counter <= 'b0;
+                rs <= 'b0;
+                cgram_addrs_counter <= 'b0;
+                done_lcd_write <= 1'b0;
+            end
+            INIT_CONFIG: begin
+                rs <= 'b0;
+                command_counter <= command_counter + 1;
+					 data <= config_memory[command_counter];
+                if(command_counter == num_commands-1) begin
+                    init_config_executed <= 1'b1;
+                end
+            end
+            CLEAR_COUNTERS0: begin
+                data_counter <= 'b0;
+                char_counter <= 'b0;
+                create_char_task <= SET_CGRAM_ADDR;
+                cgram_addrs_counter <= 'b0;
+                done_lcd_write <= 1'b0;
+                rs <= 'b0;
+                data <= 'b0;
+            end
+				CREATE_CHARS: begin
+					case(create_char_task)
+						SET_CGRAM_ADDR: begin
+							rs <= 'b0;
+							data <= cgram_addrs[cgram_addrs_counter];
+							create_char_task <= WRITE_CHARS; 
+						end
+						WRITE_CHARS: begin
+							rs <= 1;
+							data <= data_memory[data_counter];
+							data_counter <= data_counter + 1;
+							if(char_counter == char_data -1) begin
+								char_counter = 0;
+								if (cgram_addrs_counter == num_cgram_addrs-1) begin
+									done_lcd_write <= 1'b0;
+								end else begin
+									cgram_addrs_counter <= cgram_addrs_counter + 1;
+								end
+								create_char_task <= SET_CGRAM_ADDR;
+							end else begin
+								char_counter <= char_counter + 1;
+							end
+					end
+				endcase
+			end
+				
+            CLEAR_COUNTERS1: begin
+                data_counter <= 'b0;
+                char_counter <= 'b0;
+                create_char_task <= SET_CURSOR;
+                cgram_addrs_counter <= 8'h80;
+            end
+            SET_CURSOR_AND_WRITE: begin
+					case(create_char_task)
+						SET_CURSOR: begin
+							rs <= 0;
+							data<= cgram_addrs_counter;
+							create_char_task <= WRITE_LCD;
+						end
+						WRITE_LCD: begin
+							rs <= 1; 
+								case(cgram_addrs_counter) //esta zona pinta la pantalla segun se quiera
+									//pinta los dos dibujos, izqierda y derecha
+									8'h80:data <= 8'h00;
+									8'h91:data <= 8'h00;
+									8'h81:data <= 8'h01;
+									8'h92:data <= 8'h01;
+									8'h82:data <= 8'h02;
+									8'h93:data <= 8'h02;
+									8'hC0:data <= 8'h03;
+									8'hD1:data <= 8'h03;
+									8'hC1:data <= 8'h04;
+									8'hD2:data <= 8'h04;
+									8'hC2:data <= 8'h05;
+									8'hD3:data <= 8'h05;
+									8'h94:data <= 8'h06;
+									8'hA5:data <= 8'h06;
+									8'h95:data <= 8'h07;
+									8'hA6:data <= 8'h07;
+									8'h96:data <= 8'h06;
+									8'hA7:data <= 8'h06;
+									
+									//pinta el indicador de luz
+									8'h8E:data <= (luz)?8'h2A:8'hA0;
+									8'h8F:data <= (luz)?8'h2A:8'hA0;
+									
+									//indicador de cercania
+									8'hA2:data <= (cercania)?8'hFC:8'hA0;
+									8'hA3:data <= (cercania)?8'hFC:8'hA0;
+									//indicador de tiempo acelerado
+									8'hCE:data <= (fast)?8'h3E:8'hA0;
+									8'hCF:data <= (fast)?8'h3E:8'hA0;
+									//barra de saciedad
+									8'h84:data <= (saciedad > 12)?8'hFF:8'hA0;
+									8'hC4:data <= (saciedad > 8)?8'hFF:8'hA0;
+									8'h98:data <= (saciedad > 4)?8'hFF:8'hA0;
+									8'hD8:data <= (saciedad > 0)?8'hFF:8'hA0;
+									
+									//barra de diversion
+									8'h86:data <= (diversion >12)?8'hFF:8'hA0;
+									8'hC6:data <= (diversion> 8)?8'hFF:8'hA0;
+									8'h9A:data <= (diversion > 4)?8'hFF:8'hA0;
+									8'hDA:data <= (diversion > 0)?8'hFF:8'hA0;
+									//barra de descanso
+									8'h88:data <= (descanso >12)?8'hFF:8'hA0;
+									8'hC8:data <= (descanso > 8)?8'hFF:8'hA0;
+									8'h9C:data <= (descanso > 4)?8'hFF:8'hA0;
+									8'hDC:data <= (descanso > 0)?8'hFF:8'hA0;
+									//barra de salud
+									8'h8A:data <= (salud >12)?8'hFF:8'hA0;
+									8'hCA:data <= (salud > 8)?8'hFF:8'hA0;
+									8'h9E:data <= (salud > 4)?8'hFF:8'hA0;
+									8'hDE:data <= (salud > 0)?8'hFF:8'hA0;
+									//barra de felicidad
+									8'h8C:data <= (felicidad >12)?8'hFF:8'hA0;
+									8'hCC:data <= (felicidad > 8)?8'hFF:8'hA0;
+									8'hA0:data <= (felicidad > 4)?8'hFF:8'hA0;
+									8'hE0:data <= (felicidad > 0)?8'hFF:8'hA0;
+									
+									default: data<= 8'hA0;
+								endcase
+								
+								if(cgram_addrs_counter == 8'hE7) begin
+									done_lcd_write <= 1'b1;
+								end else begin
+									if(cgram_addrs_counter == 8'hA7)
+                                    cgram_addrs_counter <= 8'hC0; //salto
+									else cgram_addrs_counter <= cgram_addrs_counter + 1;
+								end
+								create_char_task <= SET_CURSOR; 
+						end
+					endcase
+				end
+       endcase
+   end
+end
+
+assign enable = clk_16ms;
+assign done_cgram_write = (data_counter == num_data_all-1)? 'b1 : 'b0;
+
+endmodule
+```
 ### 3.5.1 Entradas y Salidas
 **Entradas:**
 * **clk:** Señal de reloj para la sincronización.
@@ -442,6 +918,253 @@ Este bloque reduce la frecuencia de la señal de reloj (clk) para que la pantall
 **Actualización continua:**
 Una vez que se ha completado la escritura, el sistema vuelve al estado IDLE y espera la siguiente actualización.
 ## 3.6 Módulo control máquina de estados
+```verilog
+module control_fsm (
+    input wire clk,          // Señal de reloj
+    input wire rst,          // Señal de reset
+    input wire boton_jugar,  // Botón para jugar
+    input wire boton_alimentar,
+    input wire boton_dormir,
+    input wire boton_curar,
+    input wire boton_caricia,
+    input wire fast_button,
+    output reg [3:0] saciedad,    // Estado de saciedad
+    output reg [3:0] diversion,    // Estado de diversión
+    output reg [3:0] descanso,    // Estado de descanso
+    output reg [3:0] salud,    // Estado de salud
+    output reg [3:0] felicidad,   // Estado de felicidad
+    output reg [2:0] state,   // Estado actual de la FSM
+    output wire [1:0] an,    // Anodos del display de 7 segmentos
+    output wire [6:0] sseg  // Segmentos del display de 7 segmentos
+);
+
+// Definición de los estados
+localparam ESTADO_IDEAL     = 3'b000;
+localparam ESTADO_NEUTRO    = 3'b001;
+localparam ESTADO_DIVERSION = 3'b010;
+localparam ESTADO_ALIMENTAR = 3'b011;
+localparam ESTADO_DESCANSO  = 3'b100;
+localparam ESTADO_SALUD     = 3'b101;
+localparam ESTADO_FELIZ     = 3'b110;
+localparam ESTADO_MUERTO	= 3'b111;
+
+reg [31:0] timer;  // Temporizador para control de estados
+wire bandera;
+reg bandera_prev;
+
+Temporizador7seg temporizador_inst (
+    .clk(clk),
+    .reset(rst),
+    .fast_button(fast_button),
+    .an(an),
+    .sseg(sseg),
+    .bandera(bandera)   // Bandera que se activa cuando el temporizador llega a 0
+);
+// Inicialización de los estados
+initial begin
+    saciedad = 4'd15;  // Saciedad al máximo en el estado ideal
+    diversion = 4'd15;  // Diversión al máximo en el estado ideal
+    descanso = 4'd15;  // Descanso al máximo en el estado ideal
+    salud = 4'd15;  // Salud al máximo en el estado ideal
+    felicidad = 4'd15; // Felicidad al máximo en el estado ideal
+    state = ESTADO_IDEAL;  // Estado inicial
+    timer = 32'd0;
+	 bandera_prev <= 0;// Temporizador en 0
+	 end
+
+// Máquina de estados
+always @(posedge clk or posedge rst) begin
+    if (rst) begin
+        // Resetear todos los valores a sus estados iniciales
+        saciedad <= 4'd15;
+        diversion <= 4'd15;
+        descanso <= 4'd15;
+        salud <= 4'd15;
+        felicidad <= 4'd15;
+        state <= ESTADO_IDEAL;
+        timer <= 32'd0;
+    end 
+	 else begin
+        // Actualizar el estado de la FSM
+        case (state)
+            ESTADO_IDEAL: begin
+                // En el estado ideal, todos los valores están al máximo
+                saciedad <= 4'd15;
+                diversion <= 4'd15;
+                descanso <= 4'd15;
+                salud <= 4'd15;
+                felicidad <= 4'd15;
+
+                // Temporizador para pasar al estado neutro
+                if (timer == 250000000) begin  // Temporizador ajustado para simulación rápida
+                    state <= ESTADO_NEUTRO;
+                    timer <= 31'd0;
+                end else begin
+                    timer <= timer + 1;
+                end
+            end
+
+            ESTADO_NEUTRO: begin
+                // En el estado neutro, los valores empiezan a bajar lentamente
+                if (bandera ) begin  // Temporizador ajustado para simulación rápida
+						  if(!bandera_prev)begin
+								bandera_prev <= 1;
+								saciedad <= (saciedad > 3) ? saciedad - 4 : 0;
+								diversion <= (diversion > 3) ? diversion - 4 : 0;
+								descanso <= (descanso > 3) ? descanso - 4 : 0;
+								salud <= (salud > 3) ? salud - 4 : 0;
+								felicidad <= (felicidad > 3) ? felicidad - 4 : 0;
+						 end
+                end
+					 else begin
+						if(saciedad == 0 | salud == 0)begin
+							state <= ESTADO_MUERTO;
+						end
+						else begin
+						bandera_prev <= 0;
+						if (boton_jugar == 1) begin
+                    state <= ESTADO_DIVERSION;
+						 end
+						 else begin
+							if (boton_alimentar == 1)begin
+								state <= ESTADO_ALIMENTAR;
+							end
+							else begin
+								if(boton_dormir == 0)begin
+									state<= ESTADO_DESCANSO;
+								end
+								else begin
+									if(boton_curar == 1)begin
+										state <= ESTADO_SALUD;
+									end
+									else begin
+										if (boton_caricia == 1)begin
+											state <= ESTADO_FELIZ;
+										end
+										else begin
+											state <= ESTADO_NEUTRO;
+										end
+									end
+								end
+							end
+							end
+						 end
+					 end
+
+                
+            end
+
+            ESTADO_DIVERSION: begin
+					if(timer == 150000000)begin
+						timer <= 0;
+						// Después de jugar, volver al estado neutro
+						state <= ESTADO_NEUTRO;
+					end
+					else begin
+						timer <= timer + 1;
+						state <= ESTADO_DIVERSION;
+						if(timer == 75000000 | bandera)begin
+							// En el estado de diversión, aumentan diversión y felicidad
+							diversion <= (diversion < 11) ? diversion + 4 : 15;
+							felicidad <= (felicidad < 11) ? felicidad + 4 : 15;
+							descanso <= (descanso > 1) ? descanso - 4 : 0;
+						end
+						if(bandera)begin
+							timer <= 0;
+							state <= ESTADO_NEUTRO;
+						end
+					end 
+            end
+            ESTADO_ALIMENTAR: begin
+					 if(timer == 150000000)begin
+						timer <= 0;
+						// Después de jugar, volver al estado neutro
+						state <= ESTADO_NEUTRO;
+					end
+					else begin
+						timer <= timer + 1;
+						state <= ESTADO_ALIMENTAR;
+						if(timer == 75000000 | bandera)begin
+							saciedad <= (saciedad<11)?saciedad+4:15;  // Aumentar saciedad al alimentar
+						end
+						if(bandera)begin
+							timer <= 0;
+							state <= ESTADO_NEUTRO;
+						end
+					end 
+                
+            end
+            ESTADO_DESCANSO: begin
+                if(timer == 150000000)begin
+						timer <= 0;
+						state <= ESTADO_NEUTRO;
+					end
+					else begin
+						timer <= timer + 1;
+						state <= ESTADO_DESCANSO;
+						if(timer == 75000000 | bandera)begin
+							descanso <= (descanso < 11)?descanso + 4:15;
+						end
+						if(bandera)begin
+							timer <= 0;
+							state <= ESTADO_NEUTRO;
+						end
+					end 
+            end
+            ESTADO_SALUD: begin
+                if(timer == 150000000)begin
+						timer <= 0;
+						state <= ESTADO_NEUTRO;
+					end
+					else begin
+						timer <= timer + 1;
+						state <= ESTADO_SALUD;
+						if(timer == 75000000 | bandera)begin
+							salud <= (salud < 11)? salud + 4:15;
+						end
+						if(bandera)begin
+							timer <= 0;
+							state <= ESTADO_NEUTRO;
+						end
+					end 
+
+            end
+            ESTADO_FELIZ: begin 	
+					 if(timer == 150000000)begin
+						timer <= 0;
+						state <= ESTADO_NEUTRO;
+					end
+					else begin
+						timer <= timer + 1;
+						state <= ESTADO_FELIZ;
+						if(timer == 75000000 | bandera)begin
+							felicidad <=(felicidad < 11)?felicidad+4:15;
+						end
+						if(bandera)begin
+							timer <= 0;
+							state <= ESTADO_NEUTRO;
+						end
+					end 
+					 
+            end
+				ESTADO_MUERTO:begin
+					saciedad <= 0;
+					salud <= 0;
+					felicidad <= 0;
+					descanso <= 0;
+					diversion <= 0;
+					state <= ESTADO_MUERTO;
+				end
+            default: begin
+                // Por defecto, regresar al estado ideal xd nunca entra aca :V sdlg
+                state <= ESTADO_IDEAL;
+            end
+        endcase
+    end
+end
+
+endmodule
+```
 ### 3.6.1 Entradas y Salidas
 **Entradas:**
 - **clk:** Señal de reloj para sincronizar la FSM.
@@ -504,6 +1227,92 @@ Si las variables saciedad o salud llegan a 0 en el estado ESTADO_NEUTRO, el sist
 - **Temporizador:** Genera la señal de temporización (bandera) que controla cuánto tiempo permanece el sistema en cada estado.
 - **Ajuste de las variables:** En cada estado, las variables de saciedad, diversion, descanso, salud, y felicidad se ajustan según la acción tomada.
 ## 3.7 Módulo de Tamagotchi
+```verilog
+module TamaguchiUpdateNewPro(
+	input boton_jugar,
+    input boton_alimentar,
+    input sensor_luz,
+    input boton_curar,
+    input echo,
+	input rst_neg,
+	input clk,
+	input boton_acelerar,
+//  input boton_test,
+	 
+	 output trigger,
+	 output [6:0] segment,
+	 output [1:0] anodos,
+	 
+	 output rs,        
+    output rw,
+    output enable,    
+    output [7:0] data,
+	 output prb
+);
+
+assign rst = ~rst_neg;
+assign prb = boton_acelerar;
+wire bandera_iluminacion;
+wire object_detected;
+
+wire[3:0] saciedad;    // Estado de saciedad
+wire[3:0] diversion;    // Estado de diversión
+wire[3:0] descanso;    // Estado de descanso
+wire[3:0] salud;    // Estado de salud
+wire[3:0] felicidad;   // Estado de felicidad
+wire[2:0] state;
+	 
+sensor_luz fnsba(
+	.LDR_signal(sensor_luz),
+	.sensor(bandera_iluminacion)
+);
+
+control_fsm modulo_principal(
+	.clk(clk),
+	.rst(rst),
+	.boton_jugar(boton_jugar),
+	.boton_alimentar(boton_alimentar),
+	.boton_curar(boton_curar),
+	.boton_dormir(!bandera_iluminacion),
+	.boton_caricia(object_detected),
+	.fast_button(boton_acelerar),
+	.saciedad(saciedad),
+	.diversion(diversion),
+	.descanso(descanso),
+	.salud(salud),
+	.felicidad(felicidad),
+	.state(state),
+	.an(anodos),
+	.sseg(segment)
+);
+
+
+UltrasonicSensor dhaissdnas(
+	.clk(clk),
+	.trigger(trigger),
+	.echo(echo),
+	.object_detected(object_detected)
+);
+
+visualizacion_personalizada diahdias(
+	.clk(clk),
+	.rst(rst),
+	.estado(state),
+	.saciedad(saciedad),
+	.diversion(diversion),
+	.descanso(descanso),
+	.salud(salud),
+	.felicidad(felicidad),
+	.luz(!bandera_iluminacion),
+	.cercania(object_detected),
+	.fast(boton_acelerar),
+	.rs(rs),
+	.rw(rw),
+	.enable(enable),
+	.data(data)
+);
+endmodule
+```
 ### 3.7.1 Entradas y Salidas
 **Entradas:**
 - **boton_jugar, boton_alimentar, boton_curar, boton_acelerar:** Botones que permiten al usuario interactuar con el Tamagotchi (jugar, alimentar, curar, acelerar el tiempo).
