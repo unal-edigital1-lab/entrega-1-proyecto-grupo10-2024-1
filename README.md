@@ -42,8 +42,9 @@ EL display de 7 segmentos se usará con el fin de brindar un apoyo visualizando 
 
 1. Rst
 2. Test
-3. Interacción 1
-4. Interacción 2
+3. Fast Button
+4. Interacción 1
+5. Interacción 2
 
 El sistema de puntos se hará por medio de una barra seccionada en 10 partes iguales para cada uno de los 5 estados:
 
