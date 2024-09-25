@@ -30,13 +30,12 @@
 
 ### 1.4.1  Visualización
 
-La visualización principal se llevará a cabo en un LCD gráfico 16x4 (posible modelo: WG12864A)
+La visualización principal se llevará a cabo en un LCD gráfico 20x4 (lcd 20x4 hd44780)
 Aquí es donde mostraremos el tamagotchi, así como también las barras del estado.
 
-![lcd g](https://github.com/user-attachments/assets/83a85125-9025-4149-8bd2-5601da65ddf5)
+![image](https://github.com/user-attachments/assets/19a924f3-c576-437c-8ec3-194a80025101)
 
-EL display de 7 segmentos se usará con el fin de brindar un apoyo visualizando puntajes y valores adicionales.
-
+EL display de 7 segmentos se usará con el fin de mostrar el contador de minutos restantes antes de que cada uno de los atributos baje un cuadro.
 
 ### 1.4.2  Botones
 
@@ -47,7 +46,7 @@ EL display de 7 segmentos se usará con el fin de brindar un apoyo visualizando 
 5. Botón 2 (alimentar)
 6. Botón 3 (curar)
 
-El sistema de puntos se hará por medio de una barra seccionada en 10 partes iguales para cada uno de los 5 atributos:
+El sistema de puntos se hará por medio de una barra seccionada en 16  partes iguales (cada 4 partes es un cuadro) para cada uno de los 4 atributos. DIVERSION se calcula a partir de los otros atributos, por lo tanto este atributo no tiene un botón físico:
 
 1. Saciedad
 2. Diversión
@@ -75,10 +74,19 @@ Se usará el sensor de luz IM120710017, el cual usa un fotoresistencia GL5528.
 
 <img src="https://github.com/unal-edigital1-lab/entrega-1-proyecto-grupo10-2024-1/assets/159223904/154563b2-ced3-43cc-8fbd-30481ccec982.type" width="656" height="476">
 
-Interacción con el sensor de luz: 
+**Interacción con el sensor de luz:**
 
-- 1: si el sensor detecta oscuridad durante 5 segundos el bicho se duerme automáticamente
--  0: si hay luz
+- 1: si el sensor detecta luz entonces el tamagotchi puede perder un cuadro en DESCANSO si no recibe un cambio en 10 minutos.
+- 0: si no hay luz, indica que la mascota virtual se encuentra durmiendo, suben el atributo de DESCANSO.
+### 1.4.4  Sensor de ultra sonido
+
+Se usará el sensor de ultra sonido HC-SR04.
+![image](https://github.com/user-attachments/assets/c8594a4d-dedd-441f-8b37-0b636ed588c9)
+
+**Interacción con el sensor de ultra sonido:**
+
+- **Si hay un objeto a más de 20 centímetros:** el sensor no detecta ningún objeto, a la FPGA debería llegar un 0. No sube ningún atributo.
+- **Si hay un objeto a menos de 20 centímetros:** el sensor detecta un objeto, a la FPGA debería llegar un 1. Sube algún atributo, en este caso FELICIDAD.
 # 2. Proceso 
 Durante la elaboracion de nuestro proyecto decidimos trabajar por etapas, es decir, centrandonos principalmente en:
 - **Maquina de Estados Principal.**
@@ -86,7 +94,6 @@ Durante la elaboracion de nuestro proyecto decidimos trabajar por etapas, es dec
 - **Temporizador**
 - **Bandera del Fast Button**
 - **Implementacion de sensores**
-- 
 Lo que haremos en esta seccion es pofundizar un poco en lo que fue el proceso de diseño abordado desde un aspecto general donde estaremos mostrando cuales fueron los principales retos para nosotros adjuntando evidencias fotograficas y de simulacion para soportar nuestro trabajo.
 ## 2.1 Maquina de Estados Principal
 Para el diseño de la maquina de estados principal hicimos un primer diseño totalmente distinto a la FSM que presentamos en la primera entrega en cuanto a como seria la transicion de estados, esto debido a que aun no conociamos muy bien de que forma podiamos diseñar el codigo en verilog. A raiz de esto, al momento de hacer pruebas para ver si con cada cambio de estado podriamos al menos cambiar una cara nos encontramos con que el codigo corria bien pero no lograbamos cambiar de estado. A continuacion un pedazo del codigo de nuestro primer diseño de la FSM principal:
