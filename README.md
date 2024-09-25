@@ -153,6 +153,8 @@ A continuacion mostraremos parte del codigo donde ya teniamos una estructura de 
 ```
 En este codigo ya contabamos conun estado ideal, que seria el estado inicial donde el tamagotchi volveria luego de oprimir el boton de rest. En esta nueva version de nuestra FMS ya contabamos con una transicion entre estados mas sencilla donde podriamos hacer que los valores de las necesidades bajaran automaticamente programando un temporizador. A continuacion mostramos parte del test bench para verificar el correcto funcionamiento de este codigo:
 
+![WhatsApp Image 2024-09-24 à 23 06 02_03b87805](https://github.com/user-attachments/assets/af0b6345-1f09-44a2-88e3-a12432fb5079)
+
 
 Luego de ver que este codigo si nos funcionaba decidimos agregar un par de condiciones para cambiar entre estado, esto con el objetivo de asegurarnos de que los valores solo puedan bajar en estado neutro, para entonces obtener el codigo que es presentado en la seccion 3.
 ## 2.2 Visualizacion
@@ -1527,3 +1529,10 @@ Botones del usuario y señales de sensores (boton_jugar, sensor_luz, echo, etc.)
 - **Pantalla LCD:** Controlada por visualizacion_personalizada.
 - **Display de 7 segmentos:** Controlado por control_fsm.
 - Señal de trigger para el sensor ultrasónico.
+# Vídeo de funcionamiento del Tamagotchi
+
+**Link para poder verlo en buena definición:** [https://wetransfer.com/downloads/2ca20ad3ea748bad3858cc0a1d363c4220240925035650/f70c73](url)
+
+**Video comprimido (baja resolución):**
+https://github.com/user-attachments/assets/24296551-ab1f-40aa-8229-70826c067567
+
