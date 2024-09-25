@@ -96,7 +96,32 @@ Interacción con el sensor de luz:
 - 1: si el sensor detecta oscuridad durante 5 segundos el bicho se duerme automáticamente
 -  0: si hay luz
 # 2. Proceso 
-Durante la elaboracion de nuestro proyecto hubo diferentes etapas 
+Durante la elaboracion de nuestro proyecto decidimos trabajar por etapas, es decir, centrandonos principalmente en:
+- **Maquina de Estados Principal.**
+- **Visualizacion**
+- **Temporizador**
+- **Bandera del Fast Button**
+- **Implementacion de sensores**
+Lo que haremos en esta seccion es pofundizar un poco en lo que fue el proceso de diseño abordado desde un aspecto general donde estaremos mostrando cuales fueron los principales retos para nosotros adjuntando evidencias fotograficas y de simulacion para soportar nuestro trabajo.
+## 1.1 Maquina de Estados Principal
+Para el diseño de la maquina de estados principal hicimos un primer diseño totalmente distinto a la FSM que presentamos en la primera entrega en cuanto a como seria la transicion de estados, esto debido a que aun no conociamos muy bien de que forma podiamos diseñar el codigo en verilog. A raiz de esto, al momento de hacer pruebas para ver si con cada cambio de estado podriamos al menos cambiar una cara nos encontramos con que el codigo corria bien pero no lograbamos cambiar de estado. A continuacion un pedazo del codigo de nuestro primer diseño de la FSM principal:
+```verilog
+always @(*) begin
+    // Estado por defecto
+    next_state = state;
+
+    case (state)
+        ESTADO_SACIEDAD: begin
+            if (boton_alimentar) begin
+                saciedad <= (saciedad < 15) ? saciedad + 1 : 15; // Aumenta la saciedad al alimentar
+                sal <= (sal < 15) ? sal + 1 : 15;                 // Mejora la salud
+                feli <= (feli < 15) ? feli + 1 : 15;              // Aumenta la felicidad
+                next_state = ESTADO_FELICIDAD;                    // Pasa a estado de felicidad
+```
+## 1.2
+## 1.3
+## 1.4
+## 1.5
 ### (cambiar a conveniencia) Errores cometidos en el proceso en el sensor de ultrasonido
 - **Integración con el clock de la FPGA:** Se desconocía qué ciclos de reloj se debían usar para configurar el trigger del ultrasonido. Tras consultas en internet e información de la profesora de laboratorio, se decidió por usar el mismo de la FPGA (50MHz).
 - **Uso de timethreshold:** Para poder determinar si el objeto se detecta, se optó por usar timethreshold. Aunque se obtenía el valor, no se sabía claramente cómo usarlo en el código para detectar un objeto a cierta distancia. Se resuelve el problema al ver cómo se configura esta variable en sistemas que involucraban Arduino.
