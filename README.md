@@ -118,6 +118,9 @@ always @(*) begin
                 feli <= (feli < 15) ? feli + 1 : 15;              // Aumenta la felicidad
                 next_state = ESTADO_FELICIDAD;                    // Pasa a estado de felicidad
 ```
+Con ayuda de la profesora de laboratorio nos dimos cuenta de que no estabamos haciendo bien la transición entre estados, el error lo teniamos en ese **nex_state**. A partir de este error y como teniamos casi todo el codigo estructurado de esta forma decidimos entonces volver a hacer la maquina de estados desde 0, mas parecida a nuestra idea original, y con una transicion entre estados mas simple.
+
+A continuacion
 ## 1.2
 ## 1.3
 ## 1.4
