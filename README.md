@@ -171,7 +171,7 @@ Tenemos que enteder que esta pantalla utiliza un controlador **HD44780**  donde 
 
 El primer problema que nos surgio fue cuando nos dimos cuenta de que esta pantalla solo podia elaborar 8 caracteres especiales, lo cual nos limitaba la idea de poder diseñar una mascota a nuestro gusto. Nos dimos cuenta rapidamente de este error asi que comprendiendo que cada uno de estos caracteres tiene una direccion CGRAM donde podemos almacenar los caracteres especiales, si queremos utilizar mas de 8 caracteres especiales tendremos que Re-utilizar una de estas direcciones. Como pimera solucion intentamos entonces escoger la primer direccion para asi sobreescribirla pero se nos presentaba el siguiente problema:
 
-Aca como podemos obvservar, este ultimo caracter especial se quedaba ciclando entre el primer caracter y el ultimo. Segun lo que investigamos este error no podria ser solucionado, si sobreescribiamos mas caracteres estos siempre se iban a quedar en un cilo donde se mostraba el primer caracter y el ultimo. Entendimos que este problema se podria solucionar seleccionando 2 caracteres que sean iguales, de esta forma si comenzaban a alternan entre ellos no se notaria y asi fue como lo implementamos finalmente. A continuacion la parte del codigo de visualizacion final donde asignamos cada una de la direccion CGRAM a un lugar en la pantalla, donde la direccion del noveno caracter se comparte con la del 6 caracter.
+Aca como podemos observar, este ultimo caracter especial se quedaba ciclando entre el primer caracter y el ultimo. Segun lo que investigamos este error no podria ser solucionado, si sobreescribiamos mas caracteres estos siempre se iban a quedar en un ciclo donde se mostraba el primer caracter y el ultimo. Entendimos que este problema se podria solucionar seleccionando 2 caracteres que sean iguales, de esta forma si comenzaban a alternan entre ellos no se notaria y asi fue como lo implementamos finalmente. A continuacion la parte del codigo de visualizacion final donde asignamos cada una de la direccion CGRAM a un lugar en la pantalla, donde la direccion del noveno caracter se comparte con la del 6 caracter.
 ``` verilog
 case(cgram_addrs_counter) //esta zona pinta la pantalla segun se quiera
 									//pinta los dos dibujos, izqierda y derecha
@@ -214,10 +214,11 @@ Tambien entendimos que la pantalla puede llenarse con los 8 caracteres personali
 									8'hD8:data <= (saciedad > 0)?8'hFF:8'hA0;
 									
 ```
-Por ultimo, debido a que la forma de hacer las caras para la visualizacion era diseñando matrices de 0 y 1 que la pantalla identificaba como on y off
+Por ultimo, debido a que la forma de hacer las caras para la visualizacion era diseñando matrices de 0 y 1 que la pantalla identificaba como on y off, asi que diseñamos una forma rapida de hacer estos diseños en excel:
+
 ## 2.3 Temporizador
 ## 2.4 Bandera Fast Button
-## 1.5
+## 1.5 Sensores
 ### (cambiar a conveniencia) Errores cometidos en el proceso en el sensor de ultrasonido
 - **Integración con el clock de la FPGA:** Se desconocía qué ciclos de reloj se debían usar para configurar el trigger del ultrasonido. Tras consultas en internet e información de la profesora de laboratorio, se decidió por usar el mismo de la FPGA (50MHz).
 - **Uso de timethreshold:** Para poder determinar si el objeto se detecta, se optó por usar timethreshold. Aunque se obtenía el valor, no se sabía claramente cómo usarlo en el código para detectar un objeto a cierta distancia. Se resuelve el problema al ver cómo se configura esta variable en sistemas que involucraban Arduino.
