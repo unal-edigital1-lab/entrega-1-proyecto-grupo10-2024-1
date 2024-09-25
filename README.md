@@ -102,6 +102,7 @@ Durante la elaboracion de nuestro proyecto decidimos trabajar por etapas, es dec
 - **Temporizador**
 - **Bandera del Fast Button**
 - **Implementacion de sensores**
+- 
 Lo que haremos en esta seccion es pofundizar un poco en lo que fue el proceso de diseño abordado desde un aspecto general donde estaremos mostrando cuales fueron los principales retos para nosotros adjuntando evidencias fotograficas y de simulacion para soportar nuestro trabajo.
 ## 1.1 Maquina de Estados Principal
 Para el diseño de la maquina de estados principal hicimos un primer diseño totalmente distinto a la FSM que presentamos en la primera entrega en cuanto a como seria la transicion de estados, esto debido a que aun no conociamos muy bien de que forma podiamos diseñar el codigo en verilog. A raiz de esto, al momento de hacer pruebas para ver si con cada cambio de estado podriamos al menos cambiar una cara nos encontramos con que el codigo corria bien pero no lograbamos cambiar de estado. A continuacion un pedazo del codigo de nuestro primer diseño de la FSM principal:
@@ -120,7 +121,49 @@ always @(*) begin
 ```
 Con ayuda de la profesora de laboratorio nos dimos cuenta de que no estabamos haciendo bien la transición entre estados, el error lo teniamos en ese **nex_state**. A partir de este error y como teniamos casi todo el codigo estructurado de esta forma decidimos entonces volver a hacer la maquina de estados desde 0, mas parecida a nuestra idea original, y con una transicion entre estados mas simple.
 
-A continuacion
+A continuacion mostraremos parte del codigo donde ya teniamos una estructura de cambio de estados mas definida:
+```verilog
+ case (state)
+            ESTADO_IDEAL: begin
+                // En el estado ideal, todos los valores están al máximo
+                sac <= 4'd15;
+                div <= 4'd15;
+                des <= 4'd15;
+                sal <= 4'd15;
+                feli <= 4'd15;
+
+                // Temporizador para pasar al estado neutro
+                if (timer == 16'd10) begin  // Temporizador ajustado para simulación rápida
+                    state <= ESTADO_NEUTRO;
+                    timer <= 16'd0;
+                end else begin
+                    timer <= timer + 1;
+                end
+            end
+
+            ESTADO_NEUTRO: begin
+                // En el estado neutro, los valores empiezan a bajar lentamente
+                if (timer==160000) begin  // Temporizador ajustado para simulación rápida
+                    sac <= (sac > 0) ? sac - 1 : 0;
+                    div <= (div > 0) ? div - 1 : 0;
+                    des <= (des > 0) ? des - 1 : 0;
+                    sal <= (sal > 0) ? sal - 1 : 0;
+                    feli <= (feli > 0) ? feli - 1 : 0;
+                    timer <= 16'd0;
+                end else begin
+                    timer <= timer + 1;
+                end
+
+                // Si se presiona el botón de jugar, cambiar al estado de diversión
+                if (boton_jugar) begin
+                    state <= ESTADO_DIVERSION;
+                end else if (boton_alimentar)begin
+                    state <= ESTADO_ALIMENTAR;
+```
+En este codigo ya contabamos conun estado ideal, que seria el estado inicial donde el tamagotchi volveria luego de oprimir el boton de rest. En esta nueva version de nuestra FMS ya contabamos con una transicion entre estados mas sencilla donde podriamos hacer que los valores de las necesidades bajaran automaticamente programando un temporizador. A continuacion mostramos parte del test bench para verificar el correcto funcionamiento de este codigo:
+
+
+Luego de ver que este codigo si nos funcionaba decidimos agregar un par de condiciones para cambiar entre estado, esto con el objetivo de asegurarnos de que los valores solo puedan bajar en estado neutro, para entonces obtener el codigo que es presentado en la seccion 3.
 ## 1.2
 ## 1.3
 ## 1.4
