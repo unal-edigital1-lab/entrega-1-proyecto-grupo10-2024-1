@@ -207,6 +207,12 @@ Tambien entendimos que la pantalla puede llenarse con los 8 caracteres personali
 ```
 Por ultimo, debido a que la forma de hacer las caras para la visualizacion era diseñando matrices de 0 y 1 que la pantalla identificaba como on y off, asi que diseñamos una forma rapida de hacer estos diseños en excel:
 
+![image](https://github.com/user-attachments/assets/5d695481-1d86-4f44-8550-d26aa4a96ecd)
+
+Este programa en Excel nos permite previsualizar las caras. Por otro lado, convierte cada celda en instrucciones binarias, en 8 grupos que son los permitidos por la LCD. Estas instrucciones se convierten a un archivo .txt que se lee en el módulo de visualización personalizada.
+
+Para acceder a este excel, dejaremos el link a continuación: [https://unaledu-my.sharepoint.com/:x:/g/personal/jconejo_unal_edu_co/ESAUbMh3lb1EuitcPmC59xwBviMvpCttHFcrLA8HWKZERQ?e=w4gii9](url)
+
 ## 2.3 Temporizador
 ## 2.4 Bandera Fast Button
 ## 1.5 Sensores
