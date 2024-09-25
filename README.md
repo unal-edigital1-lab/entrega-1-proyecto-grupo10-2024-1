@@ -81,9 +81,9 @@ Se usará el sensor de ultra sonido HC-SR04.
 Durante la elaboracion de nuestro proyecto decidimos trabajar por etapas, es decir, centrandonos principalmente en:
 - **Maquina de Estados Principal.**
 - **Visualizacion**
-- **Temporizador**
-- **Bandera del Fast Button**
+- **Temporizador y Fast Button**
 - **Implementacion de sensores**
+  
 Lo que haremos en esta seccion es pofundizar un poco en lo que fue el proceso de diseño abordado desde un aspecto general donde estaremos mostrando cuales fueron los principales retos para nosotros adjuntando evidencias fotograficas y de simulacion para soportar nuestro trabajo.
 ## 2.1 Maquina de Estados Principal
 Para el diseño de la maquina de estados principal hicimos un primer diseño totalmente distinto a la FSM que presentamos en la primera entrega en cuanto a como seria la transicion de estados, esto debido a que aun no conociamos muy bien de que forma podiamos diseñar el codigo en verilog. A raiz de esto, al momento de hacer pruebas para ver si con cada cambio de estado podriamos al menos cambiar una cara nos encontramos con que el codigo corria bien pero no lograbamos cambiar de estado. A continuacion un pedazo del codigo de nuestro primer diseño de la FSM principal:
@@ -153,6 +153,7 @@ Consideramos que esta fue la parte mas dificil del proceso debido a que teniamos
 Tenemos que enteder que esta pantalla utiliza un controlador **HD44780**  donde se comunica utilizando un protocolo paralelo. Es por esto que era fundamental aprender a utilizar los comandos de rs donde indicabamos a la pantalla si estabamos mandandole un comando o escribiendo en ella.
 
 El primer problema que nos surgio fue cuando nos dimos cuenta de que esta pantalla solo podia elaborar 8 caracteres especiales, lo cual nos limitaba la idea de poder diseñar una mascota a nuestro gusto. Nos dimos cuenta rapidamente de este error asi que comprendiendo que cada uno de estos caracteres tiene una direccion CGRAM donde podemos almacenar los caracteres especiales, si queremos utilizar mas de 8 caracteres especiales tendremos que Re-utilizar una de estas direcciones. Como pimera solucion intentamos entonces escoger la primer direccion para asi sobreescribirla pero se nos presentaba el siguiente problema:
+
 
 Aca como podemos observar, este ultimo caracter especial se quedaba ciclando entre el primer caracter y el ultimo. Segun lo que investigamos este error no podria ser solucionado, si sobreescribiamos mas caracteres estos siempre se iban a quedar en un ciclo donde se mostraba el primer caracter y el ultimo. Entendimos que este problema se podria solucionar seleccionando 2 caracteres que sean iguales, de esta forma si comenzaban a alternan entre ellos no se notaria y asi fue como lo implementamos finalmente. A continuacion la parte del codigo de visualizacion final donde asignamos cada una de la direccion CGRAM a un lugar en la pantalla, donde la direccion del noveno caracter se comparte con la del 6 caracter.
 ``` verilog
