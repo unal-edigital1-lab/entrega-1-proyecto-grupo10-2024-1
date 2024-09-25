@@ -205,10 +205,66 @@ Este programa en Excel nos permite previsualizar las caras. Por otro lado, convi
 
 Para acceder a este excel, dejaremos el link a continuación: [https://unaledu-my.sharepoint.com/:x:/g/personal/jconejo_unal_edu_co/ESAUbMh3lb1EuitcPmC59xwBviMvpCttHFcrLA8HWKZERQ?e=w4gii9](url)
 
-## 2.3 Temporizador
-## 2.4 Bandera Fast Button
-## 2.5 Sensores
-### (cambiar a conveniencia) Errores cometidos en el proceso en el sensor de ultrasonido
+## 2.3 Temporizador y fast button
+El temporizador que diseñamos además de mostrar el un valor de 0 a 9 en el 7 segmentos que representa un ciclo de 10 minutos antes de que la barra de niveles baja, también tiene la función de enviar una bandera que indicaría que estos hipotéticos 10 minutos ya pasaron y es momento de bajar los niveles o de volver a estado  neutro en caso de encontrarse en otro estado. Además de esto, diseñamos un botón que aumentaría *10 la velocidad del paso del tiempo para comodidad del usuario
+
+Para el diseño de este botón de aceleración simplemente dentro del código del temporizador modificamos el tiempo limite con el que nuestra frecuencia iba a estar enviando un pulso para que así el modulo segundero pudiera ejecutarse:  
+```Verilog
+  // Parámetro ajustable según el botón
+    parameter count_limit_normal = 25000000; // Frecuencia para 1 Hz
+    parameter count_limit_fast = 416666;    // Frecuencia más rápida
+  // Temporizador que cambia su velocidad según el botón presionado
+    always @(posedge clk) begin
+        if (reset) begin
+            counter_seg  <= 0;
+            freq <= 'b0;
+        end 
+		  else begin
+				if (counter_seg > count_limit) begin
+					freq <= ~freq;
+					counter_seg <= 'd0;
+				end
+				else begin
+					counter_seg <= counter_seg + 1;
+					count_limit <= (fast_button)?count_limit_fast:count_limit_normal;
+				end
+		  end
+    end
+```
+Un problema que se nos presento al momento de diseñar la bandera fue que estábamos colocando la condición mal en el código. Nosotros pensamos que la señal se debía activar cada vez que este count_limit llegara a 0, pero al momento de realizar el test bench nos dimos cuenta que esto estaba mal, porque la bandera siempre estaría encendida y los valores bajarían con cada ciclo cumplido de count_limit, es por eso que con un cambio en el código decidimos poner la bandera en:
+```verilog
+
+    // Lógica para el segundero
+    always @(posedge freq, posedge reset) begin
+        if (reset) begin
+            segundero <= 'd0;
+            BCD <= 4'b1001;
+            bandera <= 0;  // Reiniciamos la bandera
+        end 
+		  else begin
+			if (segundero == 60) begin
+					segundero <= 0;
+					if(BCD == 0)begin
+						BCD <= 9;
+					end
+					else begin
+						BCD <= BCD - 1;
+						
+					end
+         end else begin
+            segundero <= segundero + 1;
+				if(segundero == 59 & BCD == 0)begin
+					bandera <= 1;
+				end
+				else begin
+					bandera <= 0;
+				end
+         end
+		end  
+```
+
+## 2.4 Sensores
+### Errores cometidos en el proceso en el sensor de ultrasonido
 - **Integración con el clock de la FPGA:** Se desconocía qué ciclos de reloj se debían usar para configurar el trigger del ultrasonido. Tras consultas en internet e información de la profesora de laboratorio, se decidió por usar el mismo de la FPGA (50MHz).
 - **Uso de timethreshold:** Para poder determinar si el objeto se detecta, se optó por usar timethreshold. Aunque se obtenía el valor, no se sabía claramente cómo usarlo en el código para detectar un objeto a cierta distancia. Se resuelve el problema al ver cómo se configura esta variable en sistemas que involucraban Arduino.
 ### (cambiar a conveniencia) Errores cometidos en el proceso en el sensor de luz:
@@ -1525,5 +1581,8 @@ Debido a que el video supera el límite de Mb que permite subir github, se anexa
 https://youtu.be/yGnoxMfuyR8
 
 **Video comprimido (baja resolución):**
+
+# 4. Conclusiones:
+De acuerdo a los requerimientos planteados, a nuestros diseño y especificaciones hechos inicialmente, y gracias a nuestra capacidad de trabajo en equipo, podemos concluir que el proyecto fue llevado a cabo con satisfaccion y que los resultados fueron los esperados
 https://github.com/user-attachments/assets/24296551-ab1f-40aa-8229-70826c067567
 
