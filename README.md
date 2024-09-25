@@ -1581,4 +1581,4 @@ https://youtu.be/yGnoxMfuyR8
 https://github.com/user-attachments/assets/24296551-ab1f-40aa-8229-70826c067567
 
 # 4. Conclusiones:
-De acuerdo a los requerimientos planteados, a nuestros diseño y especificaciones hechos inicialmente, y gracias a nuestra capacidad de trabajo en equipo, podemos concluir que el proyecto fue llevado a cabo con satisfaccion y que los resultados fueron los esperados
+De acuerdo a los requerimientos planteados, a nuestros diseño, especificaciones hechas inicialmente y a nuestra capacidad de trabajo en equipo, podemos concluir que el proyecto fue llevado a cabo con satisfaccion y que los resultados fueron los esperados.
