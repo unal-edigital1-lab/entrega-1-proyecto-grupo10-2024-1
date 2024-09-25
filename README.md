@@ -147,7 +147,7 @@ En este codigo ya contabamos conun estado ideal, que seria el estado inicial don
 
 
 Luego de ver que este codigo si nos funcionaba decidimos agregar un par de condiciones para cambiar entre estado, esto con el objetivo de asegurarnos de que los valores solo puedan bajar en estado neutro, para entonces obtener el codigo que es presentado en la seccion 3.
-## 2.2 Visualizacion
+## 2.2 Visualización
 Consideramos que esta fue la parte mas dificil del proceso debido a que teniamos que tener en cuenta la pantalla que ibamos a utilizar y como era el protocolo de comunicacion de esta. Afortunadamente con ayuda de la profesora diana logramos sacar adelante aspectos claves de esta visualizacion.
 
 Tenemos que enteder que esta pantalla utiliza un controlador **HD44780**  donde se comunica utilizando un protocolo paralelo. Es por esto que era fundamental aprender a utilizar los comandos de rs donde indicabamos a la pantalla si estabamos mandandole un comando o escribiendo en ella.
@@ -207,7 +207,7 @@ Para acceder a este excel, dejaremos el link a continuación: [https://unaledu-m
 
 ## 2.3 Temporizador
 ## 2.4 Bandera Fast Button
-## 1.5 Sensores
+## 2.5 Sensores
 ### (cambiar a conveniencia) Errores cometidos en el proceso en el sensor de ultrasonido
 - **Integración con el clock de la FPGA:** Se desconocía qué ciclos de reloj se debían usar para configurar el trigger del ultrasonido. Tras consultas en internet e información de la profesora de laboratorio, se decidió por usar el mismo de la FPGA (50MHz).
 - **Uso de timethreshold:** Para poder determinar si el objeto se detecta, se optó por usar timethreshold. Aunque se obtenía el valor, no se sabía claramente cómo usarlo en el código para detectar un objeto a cierta distancia. Se resuelve el problema al ver cómo se configura esta variable en sistemas que involucraban Arduino.
@@ -1519,9 +1519,10 @@ Botones del usuario y señales de sensores (boton_jugar, sensor_luz, echo, etc.)
 - **Pantalla LCD:** Controlada por visualizacion_personalizada.
 - **Display de 7 segmentos:** Controlado por control_fsm.
 - Señal de trigger para el sensor ultrasónico.
-# Vídeo de funcionamiento del Tamagotchi
 
-**Link para poder verlo en buena definición:** [https://wetransfer.com/downloads/2ca20ad3ea748bad3858cc0a1d363c4220240925035650/f70c73](url)
+# 3. Resultado final (video funcionamiento del tamagotchi)
+Debido a que el video supera el límite de Mb que permite subir github, se anexa enlace a YouTube.
+https://youtu.be/yGnoxMfuyR8
 
 **Video comprimido (baja resolución):**
 https://github.com/user-attachments/assets/24296551-ab1f-40aa-8229-70826c067567
