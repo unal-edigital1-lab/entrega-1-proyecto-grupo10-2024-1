@@ -43,48 +43,31 @@ EL display de 7 segmentos se usará con el fin de brindar un apoyo visualizando 
 1. Rst
 2. Test
 3. Fast Button
-4. Interacción 1
-5. Interacción 2
+4. Botón 1 (jugar)
+5. Botón 2 (alimentar)
+6. Botón 3 (curar)
 
-El sistema de puntos se hará por medio de una barra seccionada en 10 partes iguales para cada uno de los 5 estados:
+El sistema de puntos se hará por medio de una barra seccionada en 10 partes iguales para cada uno de los 5 atributos:
 
-1. Hambre
+1. Saciedad
 2. Diversión
 3. Descanso
 4. Salud
 5. Felicidad
 
-Ejemplo:
-					
-![image](https://github.com/unal-edigital1-lab/entrega-1-proyecto-grupo10-2024-1/assets/160156354/edf32659-d83f-4001-9073-475089ce37f8)
-
-
-En la imagen se observa que el estado hambre tiene solo 7 partes de las 10, le harían falta 3 partes para poder satisfacer al 100% esta necesidad
-
-
 Las siguientes serán las acciones que podrá hacer el usuario:
 
 1. Jugar
 2. Alimentar
-3. Curar
-4. Dormir
-5. Bañar
+3. Dormir
+4. Curar
+5. Caricia
 
-Para navegar dentro de este menú y poder desplazarse en él, el usuario debe pulsar el botón interacción 1.
-Se debe seleccionar una acción, para después pulsar el botón interacción 2, el cual hará que aumente o disminuya en un cuadro cada uno de los estados; lo anterior se describe mejor en la siguiente tabla
+Para realizar cada una de estas acciones, el usuario podrá pulsar alguno de los tres botones, o accionar alguno de los dos sensores incorporados al Tamagotchi.
 
-![image](https://github.com/unal-edigital1-lab/entrega-1-proyecto-grupo10-2024-1/assets/160156354/e66e6899-7950-4c67-8362-c5af024e3287)
+Entonces, si por ejemplo se pulsa la acción jugar, DIVERSIÓN Y FELICIDAD aumentarán en un cuadro excepto el DESCANSO, al cual se le quitará un cuadro.
 
-En donde;
-
-- 1 : Aumenta un cuadro
-- 0 : Disminuye un cuadro
-- -: Se mantiene igual
-
-Entonces, si por ejemplo se pulsa la acción jugar, todos los estados aumentarán en un cuadro excepto el descanso, al cual se le quitará un cuadro.
-
-SI NO SE REALIZA NINGUNA ACCIÓN EN 15 MINUTOS, CADA ESTADO DISMINUIRÁ UN CUADRO
-
+SI NO SE REALIZA NINGUNA ACCIÓN EN 10 MINUTOS, CADA ESTADO DISMINUIRÁ UN CUADRO.
 
 ### 1.4.3  Sensor de luz
 
