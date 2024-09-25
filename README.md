@@ -104,7 +104,7 @@ Durante la elaboracion de nuestro proyecto decidimos trabajar por etapas, es dec
 - **Implementacion de sensores**
 - 
 Lo que haremos en esta seccion es pofundizar un poco en lo que fue el proceso de diseño abordado desde un aspecto general donde estaremos mostrando cuales fueron los principales retos para nosotros adjuntando evidencias fotograficas y de simulacion para soportar nuestro trabajo.
-## 1.1 Maquina de Estados Principal
+## 2.1 Maquina de Estados Principal
 Para el diseño de la maquina de estados principal hicimos un primer diseño totalmente distinto a la FSM que presentamos en la primera entrega en cuanto a como seria la transicion de estados, esto debido a que aun no conociamos muy bien de que forma podiamos diseñar el codigo en verilog. A raiz de esto, al momento de hacer pruebas para ver si con cada cambio de estado podriamos al menos cambiar una cara nos encontramos con que el codigo corria bien pero no lograbamos cambiar de estado. A continuacion un pedazo del codigo de nuestro primer diseño de la FSM principal:
 ```verilog
 always @(*) begin
@@ -164,9 +164,59 @@ En este codigo ya contabamos conun estado ideal, que seria el estado inicial don
 
 
 Luego de ver que este codigo si nos funcionaba decidimos agregar un par de condiciones para cambiar entre estado, esto con el objetivo de asegurarnos de que los valores solo puedan bajar en estado neutro, para entonces obtener el codigo que es presentado en la seccion 3.
-## 1.2
-## 1.3
-## 1.4
+## 2.2 Visualizacion
+Consideramos que esta fue la parte mas dificil del proceso debido a que teniamos que tener en cuenta la pantalla que ibamos a utilizar y como era el protocolo de comunicacion de esta. Afortunadamente con ayuda de la profesora diana logramos sacar adelante aspectos claves de esta visualizacion.
+
+Tenemos que enteder que esta pantalla utiliza un controlador **HD44780**  donde se comunica utilizando un protocolo paralelo. Es por esto que era fundamental aprender a utilizar los comandos de rs donde indicabamos a la pantalla si estabamos mandandole un comando o escribiendo en ella.
+
+El primer problema que nos surgio fue cuando nos dimos cuenta de que esta pantalla solo podia elaborar 8 caracteres especiales, lo cual nos limitaba la idea de poder diseñar una mascota a nuestro gusto. Nos dimos cuenta rapidamente de este error asi que comprendiendo que cada uno de estos caracteres tiene una direccion CGRAM donde podemos almacenar los caracteres especiales, si queremos utilizar mas de 8 caracteres especiales tendremos que Re-utilizar una de estas direcciones. Como pimera solucion intentamos entonces escoger la primer direccion para asi sobreescribirla pero se nos presentaba el siguiente problema:
+
+Aca como podemos obvservar, este ultimo caracter especial se quedaba ciclando entre el primer caracter y el ultimo. Segun lo que investigamos este error no podria ser solucionado, si sobreescribiamos mas caracteres estos siempre se iban a quedar en un cilo donde se mostraba el primer caracter y el ultimo. Entendimos que este problema se podria solucionar seleccionando 2 caracteres que sean iguales, de esta forma si comenzaban a alternan entre ellos no se notaria y asi fue como lo implementamos finalmente. A continuacion la parte del codigo de visualizacion final donde asignamos cada una de la direccion CGRAM a un lugar en la pantalla, donde la direccion del noveno caracter se comparte con la del 6 caracter.
+``` verilog
+case(cgram_addrs_counter) //esta zona pinta la pantalla segun se quiera
+									//pinta los dos dibujos, izqierda y derecha
+									8'h80:data <= 8'h00;
+									8'h91:data <= 8'h00;
+									8'h81:data <= 8'h01;
+									8'h92:data <= 8'h01;
+									8'h82:data <= 8'h02;
+									8'h93:data <= 8'h02;
+									8'hC0:data <= 8'h03;
+									8'hD1:data <= 8'h03;
+									8'hC1:data <= 8'h04;
+									8'hD2:data <= 8'h04;
+									8'hC2:data <= 8'h05;
+									8'hD3:data <= 8'h05;
+									8'h94:data <= 8'h06;
+									8'hA5:data <= 8'h06;
+									8'h95:data <= 8'h07;
+									8'hA6:data <= 8'h07;
+									8'h96:data <= 8'h06;
+									8'hA7:data <= 8'h06;
+```
+
+Tambien entendimos que la pantalla puede llenarse con los 8 caracteres personalizados y tambien los espacios que sobraban se podian llenar con caracteres pre definidos que tiene la pantalla y de esta forma podemos representar las barras de los niveles y algunos indicadores de los sensores como podemos observar acontinuacion:
+```verilog
+									//pinta el indicador de luz
+									8'h8E:data <= (luz)?8'h2A:8'hA0;
+									8'h8F:data <= (luz)?8'h2A:8'hA0;
+									
+									//indicador de cercania
+									8'hA2:data <= (cercania)?8'hFC:8'hA0;
+									8'hA3:data <= (cercania)?8'hFC:8'hA0;
+									//indicador de tiempo acelerado
+									8'hCE:data <= (fast)?8'h3E:8'hA0;
+									8'hCF:data <= (fast)?8'h3E:8'hA0;
+									//barra de saciedad
+									8'h84:data <= (saciedad > 12)?8'hFF:8'hA0;
+									8'hC4:data <= (saciedad > 8)?8'hFF:8'hA0;
+									8'h98:data <= (saciedad > 4)?8'hFF:8'hA0;
+									8'hD8:data <= (saciedad > 0)?8'hFF:8'hA0;
+									
+```
+Por ultimo, debido a que la forma de hacer las caras para la visualizacion era diseñando matrices de 0 y 1 que la pantalla identificaba como on y off
+## 2.3 Temporizador
+## 2.4 Bandera Fast Button
 ## 1.5
 ### (cambiar a conveniencia) Errores cometidos en el proceso en el sensor de ultrasonido
 - **Integración con el clock de la FPGA:** Se desconocía qué ciclos de reloj se debían usar para configurar el trigger del ultrasonido. Tras consultas en internet e información de la profesora de laboratorio, se decidió por usar el mismo de la FPGA (50MHz).
