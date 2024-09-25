@@ -5,20 +5,16 @@
 + Santiago Cubillos
 
 # Entrega 1 del proyecto WP01
-## 1.1 Diagrama de flujo
-![Electrónica I Proyecto Primera entrega](https://github.com/user-attachments/assets/8f12221a-597c-4c37-bd57-5fdada03e0ea)
+## 1.1 Unidad de control (States Machine)
+![MaquinaDeEstados](https://github.com/user-attachments/assets/c881c3f3-824a-4327-93e9-d452828adb93)
 
-## 1.2 Unidad de control (States Machine)
-![Electrónica I Proyecto Primera entrega (1)](https://github.com/user-attachments/assets/f6fd0498-f7bf-4c9e-af9b-42a9cb640f1c)
-
-## 1.3 Caja Negra
-
+## 1.2 Caja Negra
 ![Diagrama en blanco (1)](https://github.com/user-attachments/assets/b260674d-5ec3-4574-828c-c3e9bd07f5d3)
 
 
-## 1.4  Especificación de los componentes:
+## 1.3  Especificación de los componentes:
 
-### 1.4.1  Visualización
+### 1.3.1  Visualización
 
 La visualización principal se llevará a cabo en un LCD gráfico 20x4 (lcd 20x4 hd44780)
 Aquí es donde mostraremos el tamagotchi, así como también las barras del estado.
@@ -27,7 +23,7 @@ Aquí es donde mostraremos el tamagotchi, así como también las barras del esta
 
 EL display de 7 segmentos se usará con el fin de mostrar el contador de minutos restantes antes de que cada uno de los atributos baje un cuadro.
 
-### 1.4.2  Botones
+### 1.3.2  Botones
 
 1. Rst
 2. Test
@@ -58,7 +54,7 @@ Entonces, si por ejemplo se pulsa la acción jugar, DIVERSIÓN Y FELICIDAD aumen
 
 SI NO SE REALIZA NINGUNA ACCIÓN EN 10 MINUTOS, CADA ESTADO DISMINUIRÁ UN CUADRO.
 
-### 1.4.3  Sensor de luz
+### 1.3.3  Sensor de luz
 
 Se usará el sensor de luz IM120710017, el cual usa un fotoresistencia GL5528.
 
@@ -68,7 +64,7 @@ Se usará el sensor de luz IM120710017, el cual usa un fotoresistencia GL5528.
 
 - 1: si el sensor detecta luz entonces el tamagotchi puede perder un cuadro en DESCANSO si no recibe un cambio en 10 minutos.
 - 0: si no hay luz, indica que la mascota virtual se encuentra durmiendo, suben el atributo de DESCANSO.
-### 1.4.4  Sensor de ultra sonido
+### 1.3.4  Sensor de ultra sonido
 
 Se usará el sensor de ultra sonido HC-SR04.
 ![image](https://github.com/user-attachments/assets/c8594a4d-dedd-441f-8b37-0b636ed588c9)
@@ -1582,8 +1578,7 @@ Debido a que el video supera el límite de Mb que permite subir github, se anexa
 https://youtu.be/yGnoxMfuyR8
 
 **Video comprimido (baja resolución):**
+https://github.com/user-attachments/assets/24296551-ab1f-40aa-8229-70826c067567
 
 # 4. Conclusiones:
 De acuerdo a los requerimientos planteados, a nuestros diseño y especificaciones hechos inicialmente, y gracias a nuestra capacidad de trabajo en equipo, podemos concluir que el proyecto fue llevado a cabo con satisfaccion y que los resultados fueron los esperados
-https://github.com/user-attachments/assets/24296551-ab1f-40aa-8229-70826c067567
-
